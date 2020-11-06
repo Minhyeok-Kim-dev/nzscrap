@@ -1,0 +1,935 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newzen.nzscrap.mapper.ScrapMapper">
+    <insert id="insertHistoryReqList" parameterType="java.util.List">
+        INSERT INTO History_Req
+        (
+           CompCd, AppCd, OrgCd, SvcCd, KeyCd
+         , ScrapDt, ReqCd, ScrapFromDt, ScrapToDt, ReqDt
+         , InJson
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+               #{item.compCd}, #{item.appCd}, #{item.orgCd}, #{item.svcCd}, #{item.keyCd}
+             , #{item.scrapDt}, #{item.reqCd}, #{item.scrapFromDt}, #{item.scrapToDt}, #{item.reqDt}
+             , #{item.inJson}
+            )
+        </foreach>
+    </insert>    
+    
+    <insert id="insertHistoryResList" parameterType="java.util.List">
+        INSERT INTO History_Res
+        (
+           CompCd, ScrapDt, AppCd, OrgCd, SvcCd
+         , KeyCd, ReqCd, ResCd, ResMsg, ConnCnt
+         , ErrYn, ErrMsg, OutTime, BridgeAppVer, BridgeHostNm
+         , BridgeOsNm, BridgeReqDt, BridgeResDt, Worker, WorkerAppVer
+         , WorkerHostNm, WorkerOsNm, WorkerReqDt, WorkerResDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+               #{item.compCd}, #{item.scrapDt}, #{item.appCd}, #{item.orgCd}, #{item.svcCd}
+             , #{item.keyCd}, #{item.reqCd}, #{item.resCd}, #{item.resMsg}, #{item.connCnt}
+             , #{item.errYn}, #{item.errMsg}, #{item.outTime}, #{item.bridgeAppVer}, #{item.bridgeHostNm}
+             , #{item.bridgeOsNm}, #{item.bridgeReqDt}, #{item.bridgeResDt}, #{item.worker}, #{item.workerAppVer}
+             , #{item.workerHostNm}, #{item.workerOsNm}, #{item.workerReqDt}, #{item.workerResDt}
+            )
+        </foreach>
+    </insert>
+    
+    <insert id="insertSHometaxZ300XList" parameterType="java.util.List">
+        INSERT INTO S_Hometax_Z300X
+        (
+          CompCd, SvcCd, SupByr, MakeDt, IssueNo
+        , IssueNoDisp, IssueDt, SendDt, SupBizNo, SupBizSubNo
+        , SupCorpNm, SupRepNm, SupAddress, ByrBizNo, ByrBizSubNo
+        , ByrCorpNm, ByrRepNm, ByrAddress, TotAmt, SupAmt
+        , TaxAmt, TaxClsf, TaxKnd, IsnType, Bigo
+        , DemandGb, SupEmail, ByrEmail1, ByrEmail2, ItemDt
+        , ItemNm, ItemStd, ItemQty, ItemUnt, ItemSupAmt
+        , ItemTaxAmt, ItemBigo, Rmk, ReqCd, RegId
+        , RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+	        (
+		      #{item.compCd}, #{item.svcCd}, #{item.supByr}, #{item.makeDt}, #{item.issueNo}
+	        , #{item.issueNoDisp}, #{item.issueDt}, #{item.sendDt}, #{item.supBizNo}, #{item.supBizSubNo}
+	        , #{item.supCorpNm}, #{item.supRepNm}, #{item.supAddress}, #{item.byrBizNo}, #{item.byrBizSubNo}
+	        , #{item.byrCorpNm}, #{item.byrRepNm}, #{item.byrAddress}, #{item.totAmt}, #{item.supAmt}
+	        , #{item.taxAmt}, #{item.taxClsf}, #{item.taxKnd}, #{item.isnType}, #{item.bigo}
+	        , #{item.demandGb}, #{item.supEmail}, #{item.byrEmail1}, #{item.byrEmail2}, #{item.itemDt}
+	        , #{item.itemNm}, #{item.itemStd}, #{item.itemQty}, #{item.itemUnt}, #{item.itemSupAmt}
+	        , #{item.itemTaxAmt}, #{item.itemBigo}, #{item.rmk}, #{item.reqCd}, 'admin'
+	        , now()  
+	        )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , SvcCd = VALUES(SvcCd)
+         , SupByr = VALUES(SupByr)
+         , MakeDt = VALUES(MakeDt)
+         , IssueNo = VALUES(IssueNo)
+    </insert>
+    
+    <insert id="insertSHometaxZ300XItemList" parameterType="java.util.List">
+        INSERT INTO S_Hometax_Z300X_Item
+        (
+          CompCd, SvcCd, IssueNo, ItemNo, SupBizNo
+        , ByrBizNo, ItemDt, ItemNm, ItemStd, ItemQty
+        , ItemUnt, ItemSupAmt, ItemTaxAmt, ItemBigo, Rmk
+        , ReqCd, IssueNoDisp, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.svcCd}, #{item.issueNo}, #{item.itemNo}, #{item.supBizNo}
+	        , #{item.byrBizNo}, #{item.itemDt}, #{item.itemNm}, #{item.itemStd}, #{item.itemQty}
+	        , #{item.itemUnt}, #{item.itemSupAmt}, #{item.itemTaxAmt}, #{item.itemBigo}, #{item.rmk}
+	        , #{item.reqCd}, #{item.issueNoDisp}, 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , SvcCd = VALUES(SvcCd)
+         , IssueNo = VALUES(IssueNo)
+         , ItemNo = VALUES(ItemNo)
+    </insert>
+    
+    <insert id="insertSHometaxZ4001List" parameterType="java.util.List">
+        INSERT INTO S_Hometax_Z4001
+        (
+          CompCd, TrDt, TrTm, ApprNo, IssueGb
+        , SupAmt, TaxAmt, Tip, TotAmt, FrPartNo
+        , TrGb, Rmk, ReqCd, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+              #{item.compCd}, #{item.trDt}, #{item.trTm}, #{item.apprNo}, #{item.issueGb}
+            , #{item.supAmt}, #{item.taxAmt}, #{item.tip}, #{item.totAmt}, #{item.frPartNo}
+	        , #{item.trGb}, #{item.rmk}, #{item.reqCd}, 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , TrDt = VALUES(TrDt)
+         , TrTm = VALUES(TrTm)
+    </insert>
+    
+    <insert id="insertSHometaxZ4002List" parameterType="java.util.List">
+        INSERT INTO S_Hometax_Z4002
+        (
+          CompCd, TrDt, TrTm, ApprNo, UseStore
+        , StoreNo, SupAmt, TaxAmt, Tip, TotAmt
+        , FrPartNo, TrGb, DdcYn, BmanClNm, TfbCd
+        , TfbNm, Bigo, Rmk, ReqCd, IssueGb
+        , RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.trDt}, #{item.trTm}, #{item.apprNo}, #{item.useStore}
+	        , #{item.storeNo}, #{item.supAmt}, #{item.taxAmt}, #{item.tip}, #{item.totAmt}
+	        , #{item.frPartNo}, #{item.trGb}, #{item.ddcYn}, #{item.bmanClNm}, #{item.tfbCd}
+	        , #{item.tfbNm}, #{item.bigo}, #{item.rmk}, #{item.reqCd}, #{item.issueGb}
+	        , 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , TrDt = VALUES(TrDt)
+         , TrTm = VALUES(TrTm)
+    </insert>
+    
+    <insert id="insertSHometaxZ4010List" parameterType="java.util.List">
+        INSERT INTO S_Hometax_Z4010
+        (
+          CompCd, AprvDt, VatDdcClCd, CrcmClNm, BusnCrdCardNoEncCntn
+        , MrntTxprDscmNoEncCntn, MrntTxprNm, SplCft, VaTxamt, Tip
+        , TotaTrsAmt, BmanClNm, BcNm, TfbNm, DdcYnNm
+        , VatDdcClNm, Rmk, ReqCd, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.aprvDt}, #{item.vatDdcClCd}, #{item.crcmClNm}, #{item.busnCrdCardNoEncCntn}
+	        , #{item.mrntTxprDscmNoEncCntn}, #{item.mrntTxprNm}, #{item.splCft}, #{item.vaTxamt}, #{item.tip}
+	        , #{item.totaTrsAmt}, #{item.bmanClNm}, #{item.bcNm}, #{item.tfbNm}, #{item.ddcYnNm}
+	        , #{item.vatDdcClNm}, #{item.rmk}, #{item.reqCd}, 'admin', now()  
+            )
+        </foreach>
+    </insert>
+    
+    <insert id="insertSHometaxZ4020List" parameterType="java.util.List">
+        INSERT INTO S_Hometax_Z4020
+        (
+          CompCd, TrsDt, CrccTxprNm, WlfCardNoEncCntn, MrntTxprDscmNoEncCntn
+        , MrntTxprNm, SplCft, VaTxamt, Tip, TotaTrsAmt
+        , BmanClNm, TfbNm, TrsClNm, DdcYnNm, VatDdcClNm
+        , Rmk, ReqCd, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.trsDt}, #{item.crccTxprNm}, #{item.wlfCardNoEncCntn}, #{item.mrntTxprDscmNoEncCntn}
+	        , #{item.mrntTxprNm}, #{item.splCft}, #{item.vaTxamt}, #{item.tip}, #{item.totaTrsAmt}
+	        , #{item.bmanClNm}, #{item.tfbNm}, #{item.trsClNm}, #{item.ddcYnNm}, #{item.vatDdcClNm}
+	        , #{item.rmk}, #{item.reqCd}, 'admin', now()  
+            )
+        </foreach>
+    </insert>
+    
+    <insert id="insertSHometaxZ4050List" parameterType="java.util.List">
+        INSERT INTO S_Hometax_Z4050
+        (
+          CompCd, StlYm, StlScnt, TotaStlAmt, EtcSls
+        , PurcEuCardSls, Tip, Rmk, ReqCd, RegId
+        , RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+              #{item.compCd}, #{item.stlYm}, #{item.stlScnt}, #{item.totaStlAmt}, #{item.etcSls}
+	        , #{item.purcEuCardSls}, #{item.tip}, #{item.rmk}, #{item.reqCd}, 'admin'
+	        , now() 
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , StlYm = VALUES(StlYm)
+    </insert>
+    
+    <insert id="insertSHometaxZ4060List" parameterType="java.util.List">
+        INSERT INTO S_Hometax_Z4060
+        (
+          CompCd, SttsYm, CshSlsSplCftAmt, CshSlsVatAmt, CshSlsTipAmt
+        , CshSlsAmt, CshSlsScnt, Rmk, ReqCd, RegId
+        , RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+              #{item.compCd}, #{item.sttsYm}, #{item.cshSlsSplCftAmt}, #{item.cshSlsVatAmt}, #{item.cshSlsTipAmt}
+            , #{item.cshSlsAmt}, #{item.cshSlsScnt}, #{item.rmk}, #{item.reqCd}, 'admin'
+            , now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , SttsYm = VALUES(SttsYm)
+    </insert>
+    
+    <insert id="insertSHometaxZ5002List" parameterType="java.util.List">
+        INSERT INTO S_Hometax_Z5002
+        (
+          CompCd, ItrfCd, TxnrmYm, RtnClCd, RtnDt
+        , MtfbCd, FrsRgtDtm, RtnClNm, Tin, RtnCvaId
+        , RtnClDetailCd, RtnClDetailNm, PymnYm, SbmsYm, StmnKndCd
+        , StmnKndNm, TxnrmStrtDt, TxnrmEndDt, TxprNm, TxprNo
+        , RcatNo, RcatDt, CvaAplnDtm, ChrgTxhfOgzCd, UserId
+        , StasAmt, OgntxSbtrScpmTxamt, OgntxInpmSchuTxamt, OgntxSbtrPmtTxamt, FnftxSbtrScpmTxamt
+        , FnftxInpmSchuTxamt, FnftxSbtrPmtTxamt, AprpAfthPmtTxamt, SurcRtnClCd, TmonCrfwRfndTxamt
+        , RtnRfndClCd, RfndAplnAmt, VatRtnYr, Txtpe, VatActlPmtTxamt
+        , VlntSbtrPmtTxamt, Rmk, ReqCd, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+              #{item.compCd}, #{item.itrfCd}, #{item.txnrmYm}, #{item.rtnClCd}, #{item.rtnDt}
+            , #{item.mtfbCd}, #{item.frsRgtDtm}, #{item.rtnClNm}, #{item.tin}, #{item.rtnCvaId}
+            , #{item.rtnClDetailCd}, #{item.rtnClDetailNm}, #{item.pymnYm}, #{item.sbmsYm}, #{item.stmnKndCd}
+            , #{item.stmnKndNm}, #{item.txnrmStrtDt}, #{item.txnrmEndDt}, #{item.txprNm}, #{item.txprNo}
+            , #{item.rcatNo}, #{item.rcatDt}, #{item.cvaAplnDtm}, #{item.chrgTxhfOgzCd}, #{item.userId}
+            , #{item.stasAmt}, #{item.ogntxSbtrScpmTxamt}, #{item.ogntxInpmSchuTxamt}, #{item.ogntxSbtrPmtTxamt}, #{item.fnftxSbtrScpmTxamt}
+            , #{item.fnftxInpmSchuTxamt}, #{item.fnftxSbtrPmtTxamt}, #{item.aprpAfthPmtTxamt}, #{item.surcRtnClCd}, #{item.tmonCrfwRfndTxamt}
+            , #{item.rtnRfndClCd}, #{item.rfndAplnAmt}, #{item.vatRtnYr}, #{item.txtpe}, #{item.vatActlPmtTxamt}
+            , #{item.vlntSbtrPmtTxamt}, #{item.rmk}, #{item.reqCd}, 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , ItrfCd = VALUES(ItrfCd)
+         , TxnrmYm = VALUES(TxnrmYm) 
+         , RtnClCd = VALUES(RtnClCd) 
+    </insert>
+    
+    <insert id="insertSHometaxZ0006List" parameterType="java.util.List">
+        INSERT INTO S_Hometax_Z0006
+        (
+          CompCd, SupByr, TaxGb, WrtYr, WrtQt
+        , WrtDtFrom, WrtDtTo, WithIn_bsnoIsnClplcCnt, WithIn_bsnoIsnScnt, WithIn_bsnoIsnSplCft
+        , WithIn_bsnoIsnTxamt, WithIn_resnoIsnClplcCnt, WithIn_resnoIsnScnt, WithIn_resnoIsnSplCft , WithIn_resnoIsnTxamt
+        , WithIn_totCnt, WithIn_totPurchplcCnt, WithIn_totSellplcCnt, WithIn_totSplCft, WithIn_totTxamt
+        , Et_bsnoIsnClplcCnt, Et_bsnoIsnScnt, Et_bsnoIsnSplCft, Et_bsnoIsnTxamt, Et_resnoIsnClplcCnt
+        , Et_resnoIsnScnt, Et_resnoIsnSplCft, Et_resnoIsnTxamt, Et_totCnt, Et_totPurchplcCnt
+        , Et_totSellplcCnt, Et_totSplCft, Et_totTxamt, Rmk, ReqCd
+        , RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+	        (
+	          #{item.compCd}, #{item.supByr}, #{item.taxGb}, #{item.wrtYr}, #{item.wrtQt}
+	        , #{item.wrtDtFrom}, #{item.wrtDtTo}, #{item.withIn_bsnoIsnClplcCnt}, #{item.withIn_bsnoIsnScnt}, #{item.withIn_bsnoIsnSplCft}
+	        , #{item.withIn_bsnoIsnTxamt}, #{item.withIn_resnoIsnClplcCnt}, #{item.withIn_resnoIsnScnt}, #{item.withIn_resnoIsnSplCft}, #{item.withIn_resnoIsnTxamt}
+	        , #{item.withIn_totCnt}, #{item.withIn_totPurchplcCnt}, #{item.withIn_totSellplcCnt}, #{item.withIn_totSplCft}, #{item.withIn_totTxamt}
+	        , #{item.et_bsnoIsnClplcCnt}, #{item.et_bsnoIsnScnt}, #{item.et_bsnoIsnSplCft}, #{item.et_bsnoIsnTxamt}, #{item.et_resnoIsnClplcCnt}
+	        , #{item.et_resnoIsnScnt}, #{item.et_resnoIsnSplCft}, #{item.et_resnoIsnTxamt}, #{item.et_totCnt}, #{item.et_totPurchplcCnt}
+	        , #{item.et_totSellplcCnt}, #{item.et_totSplCft}, #{item.et_totTxamt}, #{item.rmk}, #{item.reqCd}
+	        , 'admin', now()
+	        )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , SupByr = VALUES(SupByr)
+         , TaxGb = VALUES(TaxGb) 
+         , WrtYr = VALUES(WrtYr)
+         , WrtQt = VALUES(WrtQt)
+    </insert>
+    
+    <insert id="insertSHometaxZ0006DtlList" parameterType="java.util.List">
+        INSERT INTO S_Hometax_Z0006_Dtl
+        (
+          CompCd, SupByr, TaxGb, WrtYr, WrtQt
+        , WrtDt, Etan, WrtDtFrom, WrtDtTo, IsnDtm
+        , TmsnDt, DmnrTxprDscmNo, DmnrMpbNoStr, TnmNm, RprsFnm
+        , TotaAmt, SupSplCft, SumTxamt, EtxivKndCd, IsnTypeCd
+        , EtxivSq1RmrkCntn, RecApeClCd, MchrgEmlAdrSls, MchrgEmlAdrPrh, Rmk
+        , ReqCd, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+              #{item.compCd}, #{item.supByr}, #{item.taxGb}, #{item.wrtYr}, #{item.wrtQt}
+	        , #{item.wrtDt}, #{item.etan}, #{item.wrtDtFrom}, #{item.wrtDtTo}, #{item.isnDtm}
+	        , #{item.tmsnDt}, #{item.dmnrTxprDscmNo}, #{item.dmnrMpbNoStr}, #{item.tnmNm}, #{item.rprsFnm}
+	        , #{item.totaAmt}, #{item.supSplCft}, #{item.sumTxamt}, #{item.etxivKndCd}, #{item.isnTypeCd}
+	        , #{item.etxivSq1RmrkCntn}, #{item.recApeClCd}, #{item.mchrgEmlAdrSls}, #{item.mchrgEmlAdrPrh}, #{item.rmk}
+	        , #{item.reqCd}, 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , SupByr = VALUES(SupByr)
+         , TaxGb = VALUES(TaxGb) 
+         , WrtYr = VALUES(WrtYr)
+         , WrtQt = VALUES(WrtQt)
+         , WrtDt = VALUES(WrtDt)
+         , Etan = VALUES(Etan)
+    </insert>
+    
+    <insert id="insertSCardsalesB0002List" parameterType="java.util.List">
+        INSERT INTO S_Cardsales_B0002
+        (
+          CompCd, MerNo, CardNm, StlBankNm, StlAcctNo
+        , SinYongFeeRate, CheckFeeRateB, CheckFeeRateC, PymPeriod, Rmk
+        , ReqCd, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.merNo}, #{item.cardNm}, #{item.stlBankNm}, #{item.stlAcctNo}
+	        , #{item.sinYongFeeRate}, #{item.checkFeeRateB}, #{item.checkFeeRateC}, #{item.pymPeriod}, #{item.rmk}
+	        , #{item.reqCd}, 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , MerNo = VALUES(MerNo)
+    </insert>
+    
+    <insert id="insertSCardsalesB0011DtlList" parameterType="java.util.List">
+        INSERT INTO S_Cardsales_B0011_Dtl
+        (
+          CompCd, TrDt, TrTm, CardRealNo, ApprNo
+        , TrDiv, CardCorp1, CardCorp2, MerNo, CardKndCd
+        , CardKnd, CardNum, ApprAmt, InstDiv, InsTrm
+        , Rmk, ReqCd, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.trDt}, #{item.trTm}, #{item.cardRealNo}, #{item.apprNo}
+	        , #{item.trDiv}, #{item.cardCorp1}, #{item.cardCorp2}, #{item.merNo}, #{item.cardKndCd}
+	        , #{item.cardKnd}, #{item.cardNum}, #{item.apprAmt}, #{item.instDiv}, #{item.insTrm}
+	        , #{item.rmk}, #{item.reqCd}, 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , TrDt = VALUES(TrDt)
+         , TrTm = VALUES(TrTm)
+         , ApprNo = VALUES(ApprNo)
+    </insert>
+    
+    <insert id="insertSCardsalesB0011SumList" parameterType="java.util.List">
+        INSERT INTO S_Cardsales_B0011_Sum
+        (
+          CompCd, TrDt, TrSumAmt, TrSumCnt, ApprSumAmt
+        , ApprSumCnt, CanSumAmt, CanSumCnt, Rmk, ReqCd
+        , RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.trDt}, #{item.trSumAmt}, #{item.trSumCnt}, #{item.apprSumAmt}
+	        , #{item.apprSumCnt}, #{item.canSumAmt}, #{item.canSumCnt}, #{item.rmk}, #{item.reqCd}
+	        , 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , TrDt = VALUES(TrDt)
+    </insert>
+    
+    <insert id="insertSCardsalesB0021DtlList" parameterType="java.util.List">
+        INSERT INTO S_Cardsales_B0021_Dtl
+        (
+          CompCd, TrDt, BuyDt, ApprNo, CardCorp1
+        , CardCorp2, MerNo, CardKnd, CardNum, CardDivCd
+        , CardDiv, BuyAmt, CommMem, CommPoint, CommEtc
+        , CommSum, CommVat, PayAmt, PayDt, Rmk
+        , ReqCd, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.trDt}, #{item.buyDt}, #{item.apprNo}, #{item.cardCorp1}
+	        , #{item.cardCorp2}, #{item.merNo}, #{item.cardKnd}, #{item.cardNum}, #{item.cardDivCd}
+	        , #{item.cardDiv}, #{item.buyAmt}, #{item.commMem}, #{item.commPoint}, #{item.commEtc}
+	        , #{item.commSum}, #{item.commVat}, #{item.payAmt}, #{item.payDt}, #{item.rmk}
+	        , #{item.reqCd}, 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , TrDt = VALUES(TrDt)
+         , BuyDt = VALUES(BuyDt)
+         , ApprNo = VALUES(ApprNo)
+    </insert>
+    
+    <insert id="insertSCardsalesB0021SumList" parameterType="java.util.List">
+        INSERT INTO S_Cardsales_B0021_Sum
+        (
+          CompCd, BuyDt, BuySumAmt, BuySumCnt, PaySumAmt
+        , Rmk, ReqCd, CommMem, CommPoint, CommEtc
+        , CommSum, CommVat, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.buyDt}, #{item.buySumAmt}, #{item.buySumCnt}, #{item.paySumAmt}
+	        , #{item.rmk}, #{item.reqCd}, #{item.commMem}, #{item.commPoint}, #{item.commEtc}
+	        , #{item.commSum}, #{item.commVat}, 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , BuyDt = VALUES(BuyDt)
+    </insert>
+    
+    <insert id="insertSCardsalesB0031DtlList" parameterType="java.util.List">
+        INSERT INTO S_Cardsales_B0031_Dtl
+        (
+          CompCd, PayDt, MemNo, AcctNo, CardCorp1
+        , Bank, SalesCnt, SalesAmt, DetAmt, CommVat
+        , EtcAmt, RealPayAmt, Rmk, ReqCd, RegId
+        , RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.payDt}, #{item.memNo}, #{item.acctNo}, #{item.cardCorp1}
+	        , #{item.bank}, #{item.salesCnt}, #{item.salesAmt}, #{item.detAmt}, #{item.commVat}
+	        , #{item.etcAmt}, #{item.realPayAmt}, #{item.rmk}, #{item.reqCd}, 'admin'
+	        , now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , PayDt = VALUES(PayDt)
+         , AcctNo = VALUES(AcctNo)
+    </insert>
+    
+    <insert id="insertSCardsalesB0031SumList" parameterType="java.util.List">
+        INSERT INTO S_Cardsales_B0031_Sum
+        (
+          CompCd, PayDt, SalesSumAmt, SalesSumCnt, PaySumAmt
+        , Rmk, ReqCd, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.payDt}, #{item.salesSumAmt}, #{item.salesSumCnt}, #{item.paySumAmt}
+	        , #{item.rmk}, #{item.reqCd}, 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , PayDt = VALUES(PayDt)
+    </insert>
+    
+    <insert id="insertSBankB0002List" parameterType="java.util.List">
+        INSERT INTO S_Bank_B0002
+        (
+          CompCd, AcctNo, TrDt, TrTm, Balance
+        , BankCd, InAmt, OutAmt, TrBr, TrNm
+        , TrTp, TrDetail, RecvAcctNo, Memo, Rmk
+        , ReqCd, TrRnd, Wlbn, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.acctNo}, #{item.trDt}, #{item.trTm}, #{item.balance}
+	        , #{item.bankCd}, #{item.inAmt}, #{item.outAmt}, #{item.trBr}, #{item.trNm}
+	        , #{item.trTp}, #{item.trDetail}, #{item.recvAcctNo}, #{item.memo}, #{item.rmk}
+	        , #{item.reqCd}, #{item.trRnd}, #{item.wlbn}, 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , AcctNo = VALUES(AcctNo)
+         , TrDt = VALUES(TrDt)
+         , TrTm = VALUES(TrTm)
+    </insert>
+    
+    <insert id="insertSCbkB0002List" parameterType="java.util.List">
+        INSERT INTO S_Cbk_B0002
+        (
+          CompCd, AcctNo, TrDt, TrTm, Balance
+        , BankCd, InAmt, OutAmt, CurCd, TrBr
+        , TrNm, TrTp, TrDetail, RecvAcctNo, Rmk
+        , ReqCd, TrRnd, Wlbn, Memo, RegId
+        , RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.acctNo}, #{item.trDt}, #{item.trTm}, #{item.balance}
+	        , #{item.bankCd}, #{item.inAmt}, #{item.outAmt}, #{item.curCd}, #{item.trBr}
+	        , #{item.trNm}, #{item.trTp}, #{item.trDetail}, #{item.recvAcctNo}, #{item.rmk}
+	        , #{item.reqCd}, #{item.trRnd}, #{item.wlbn}, #{item.memo}, 'admin'
+	        , now()  
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , AcctNo = VALUES(AcctNo)
+         , TrDt = VALUES(TrDt)
+         , TrTm = VALUES(TrTm)
+    </insert>
+    
+    <insert id="insertSSbkB0002List" parameterType="java.util.List">
+        INSERT INTO S_Sbk_B0002
+        (
+          CompCd, AcctNo, TrDt, TrTm, Balance
+        , BankCd, InAmt, OutAmt, TrBr, TrNm
+        , TrTp, TrDetail, RecvAcctNo, Memo, Rmk
+        , ReqCd, TrRnd, Wlbn, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+              #{item.compCd}, #{item.acctNo}, #{item.trDt}, #{item.trTm}, #{item.balance}
+            , #{item.bankCd}, #{item.inAmt}, #{item.outAmt}, #{item.trBr}, #{item.trNm}
+            , #{item.trTp}, #{item.trDetail}, #{item.recvAcctNo}, #{item.memo}, #{item.rmk}
+            , #{item.reqCd}, #{item.trRnd}, #{item.wlbn}, 'admin', now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , AcctNo = VALUES(AcctNo)
+         , TrDt = VALUES(TrDt)
+         , TrTm = VALUES(TrTm)
+    </insert>
+    
+    <insert id="insertSCardC0005List" parameterType="java.util.List">
+        INSERT INTO S_Card_C0005
+        (
+          CompCd, UseDt, UseTm, ApprNo, UseCard
+        , UseStore, UseAmt, UseDiv, ApprSt, PartialCancelAmt
+        , InstMon, DiscAmt, SavePoint, SettleDt, StoreBizNo
+        , StoreCeo, StoreAddr, StoreTel, StoreType, ExYn
+        , ExCurCd, UseExAmt, AddTax, Tip, StoreBizNo2
+        , Rmk, ReqCd, GivenCardNo, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.useDt}, #{item.useTm}, #{item.apprNo}, #{item.useCard}
+	        , #{item.useStore}, #{item.useAmt}, #{item.useDiv}, #{item.apprSt}, #{item.partialCancelAmt}
+	        , #{item.instMon}, #{item.discAmt}, #{item.savePoint}, #{item.settleDt}, #{item.storeBizNo}
+	        , #{item.storeCeo}, #{item.storeAddr}, #{item.storeTel}, #{item.storeType}, #{item.exYn}
+	        , #{item.exCurCd}, #{item.useExAmt}, #{item.addTax}, #{item.tip}, #{item.storeBizNo2}
+	        , #{item.rmk}, #{item.reqCd}, #{item.givenCardNo}, 'admin', now()  
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , UseDt = VALUES(UseDt)
+         , ApprNo = VALUES(ApprNo)
+    </insert>
+    
+    <insert id="insertSCcdC0005List" parameterType="java.util.List">
+        INSERT INTO S_Ccd_C0005
+        (
+          CompCd, UseDt, UseTm, ApprNo, UseCard
+        , UseStore, UseAmt, UseExAmt, ExCurCd, UseDiv
+        , ApprSt, InstMon, DiscAmt, SavePoint, SettleDt
+        , StoreBizNo, StoreCeo, StoreAddr, StoreTel, StoreType
+        , AddTax, Tip, TaxType, StoreSt, StoreNo
+        , Rmk, ReqCd, GivenCardNo, RegId, RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+	          #{item.compCd}, #{item.useDt}, #{item.useTm}, #{item.apprNo}, #{item.useCard}
+	        , #{item.useStore}, #{item.useAmt}, #{item.useExAmt}, #{item.exCurCd}, #{item.useDiv}
+	        , #{item.apprSt}, #{item.instMon}, #{item.discAmt}, #{item.savePoint}, #{item.settleDt}
+	        , #{item.storeBizNo}, #{item.storeCeo}, #{item.storeAddr}, #{item.storeTel}, #{item.storeType}
+	        , #{item.addTax}, #{item.tip}, #{item.taxType}, #{item.storeSt}, #{item.storeNo}
+	        , #{item.rmk}, #{item.reqCd}, #{item.givenCardNo}, 'admin', now()  
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , UseDt = VALUES(UseDt)
+         , ApprNo = VALUES(ApprNo)
+    </insert>
+    
+    
+    
+    <delete id="deleteSHometaxZ4010List" parameterType="SHometaxZ4010">
+        DELETE 
+          FROM S_Hometax_Z4010
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND AprvDt BETWEEN #{fromDt} AND #{toDt}
+    </delete>
+    
+    <delete id="deleteSHometaxZ4020List" parameterType="SHometaxZ4020">
+        DELETE 
+          FROM S_Hometax_Z4020
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND TrsDtDt BETWEEN #{fromDt} AND #{toDt}
+    </delete>
+    
+    <delete id="deleteSCardsalesB0011DtlList" parameterType="SCardsalesB0011Dtl">
+        DELETE
+          FROM S_Cardsales_B0011_Dtl
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND TrDt BETWEEN #{fromDt} AND #{toDt}
+    </delete>
+    
+    <delete id="deleteSCardsalesB0021DtlList" parameterType="SCardsalesB0021Dtl">
+        DELETE
+          FROM S_Cardsales_B0021_Dtl
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND TrDt BETWEEN #{fromDt} AND #{toDt}
+    </delete>
+    
+    <delete id="deleteSCardsalesB0031DtlList" parameterType="SCardsalesB0031Dtl">
+        DELETE
+          FROM S_Cardsales_B0031_Dtl
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND PayDt BETWEEN #{fromDt} AND #{toDt}
+    </delete>
+    
+    <select id="selectHistoryReqList" resultType="HistoryReq" parameterType="HistoryReq">
+        SELECT CompCd, AppCd, OrgCd, SvcCd, KeyCd
+             , ScrapDt, MAX(ReqCd) AS ReqCd, ScrapFromDt, ScrapToDt
+             , ReqDt, InJson
+          FROM History_Req
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ScrapDt = #{scrapDt}
+         GROUP BY CompCd, AppCd, OrgCd, SvcCd, KeyCd, ScrapDt
+    </select>
+    
+    <select id="selectHistoryResList" resultType="HistoryRes" parameterType="HistoryRes">
+        SELECT CompCd, ScrapDt, AppCd, OrgCd, SvcCd
+             , KeyCd, MAX(ReqCd) AS ReqCd, ResCd, ResMsg, ConnCnt
+             , ErrYn, ErrMsg, OutTime, BridgeAppVer, BridgeHostNm
+             , BridgeOsNm, BridgeReqDt, BridgeResDt, Worker, WorkerAppVer
+             , WorkerHostNm, WorkerOsNm, WorkerReqDt, WorkerResDt
+          FROM History_Res hr
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ScrapDt = #{scrapDt}
+         GROUP BY CompCd, ScrapDt, AppCd, OrgCd, SvcCd, KeyCd, hr.ReqCd
+    </select>
+    
+    <select id="selectSHometaxZ300XList" resultType="SHometaxZ300X" parameterType="SHometaxZ300X">
+        SELECT CompCd, SvcCd, SupByr, MakeDt, IssueNo
+	         , IssueNoDisp, IssueDt, SendDt, SupBizNo, SupBizSubNo
+	         , SupCorpNm, SupRepNm, SupAddress, ByrBizNo, ByrBizSubNo
+	         , ByrCorpNm, ByrRepNm, ByrAddress, TotAmt, SupAmt
+	         , TaxAmt, TaxClsf, TaxKnd, IsnType, Bigo
+	         , DemandGb, SupEmail, ByrEmail1, ByrEmail2, ItemDt
+	         , ItemNm, ItemStd, ItemQty, ItemUnt, ItemSupAmt
+	         , ItemTaxAmt, ItemBigo, Rmk, ReqCd, RegId
+	         , RegDt
+          FROM S_Hometax_Z300X
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSHometaxZ300XItemList" resultType="SHometaxZ300XItem" parameterType="SHometaxZ300XItem">
+        SELECT CompCd, SvcCd, IssueNo, ItemNo, SupBizNo
+	         , ByrBizNo, ItemDt, ItemNm, ItemStd, ItemQty
+	         , ItemUnt, ItemSupAmt, ItemTaxAmt, ItemBigo, Rmk
+	         , ReqCd, IssueNoDisp, RegId, RegDt
+	      FROM S_Hometax_Z300X_Item
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}	     
+    </select>
+    
+    <select id="selectSHometaxZ4001List" resultType="SHometaxZ4001" parameterType="SHometaxZ4001">
+        SELECT CompCd, TrDt, TrTm, ApprNo, IssueGb
+	         , SupAmt, TaxAmt, Tip, TotAmt, FrPartNo
+	         , TrGb, Rmk, ReqCd, RegId, RegDt
+	      FROM S_Hometax_Z4001
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSHometaxZ4002List" resultType="SHometaxZ4002" parameterType="SHometaxZ4002">
+        SELECT CompCd, TrDt, TrTm, ApprNo, UseStore
+	         , StoreNo, SupAmt, TaxAmt, Tip, TotAmt
+	         , FrPartNo, TrGb, DdcYn, BmanClNm, TfbCd
+	         , TfbNm, Bigo, Rmk, ReqCd, IssueGb
+	         , RegId, RegDt
+          FROM S_Hometax_Z4002
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSHometaxZ4010List" resultType="SHometaxZ4010" parameterType="SHometaxZ4010">
+        SELECT CompCd, AprvDt, VatDdcClCd, CrcmClNm, BusnCrdCardNoEncCntn
+	         , MrntTxprDscmNoEncCntn, MrntTxprNm, SplCft, VaTxamt, Tip
+	         , TotaTrsAmt, BmanClNm, BcNm, TfbNm, DdcYnNm
+	         , VatDdcClNm, Rmk, ReqCd, RegId, RegDt
+	      FROM S_Hometax_Z4010
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSHometaxZ4020List" resultType="SHometaxZ4020" parameterType="SHometaxZ4020">
+        SELECT CompCd, TrsDt, CrccTxprNm, WlfCardNoEncCntn, MrntTxprDscmNoEncCntn
+	         , MrntTxprNm, SplCft, VaTxamt, Tip, TotaTrsAmt
+	         , BmanClNm, TfbNm, TrsClNm, DdcYnNm, VatDdcClNm
+	         , Rmk, ReqCd, RegId, RegDt
+	      FROM S_Hometax_Z4020
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+
+    <select id="selectSHometaxZ4050List" resultType="SHometaxZ4050" parameterType="SHometaxZ4050">
+        SELECT CompCd, StlYm, StlScnt, TotaStlAmt, EtcSls
+             , PurcEuCardSls, Tip, Rmk, ReqCd, RegId
+             , RegDt
+          FROM S_Hometax_Z4050
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSHometaxZ4060List" resultType="SHometaxZ4060" parameterType="SHometaxZ4060">
+        SELECT CompCd, SttsYm, CshSlsSplCftAmt, CshSlsVatAmt, CshSlsTipAmt
+             , CshSlsAmt, CshSlsScnt, Rmk, ReqCd, RegId
+             , RegDt
+          FROM S_Hometax_Z4060
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+        
+    <select id="selectSHometaxZ5002List" resultType="SHometaxZ5002" parameterType="SHometaxZ5002">
+        SELECT CompCd, ItrfCd, TxnrmYm, RtnClCd, RtnDt
+	         , MtfbCd, FrsRgtDtm, RtnClNm, Tin, RtnCvaId
+	         , RtnClDetailCd, RtnClDetailNm, PymnYm, SbmsYm, StmnKndCd
+	         , StmnKndNm, TxnrmStrtDt, TxnrmEndDt, TxprNm, TxprNo
+	         , RcatNo, RcatDt, CvaAplnDtm, ChrgTxhfOgzCd, UserId
+	         , StasAmt, OgntxSbtrScpmTxamt, OgntxInpmSchuTxamt, OgntxSbtrPmtTxamt, FnftxSbtrScpmTxamt
+	         , FnftxInpmSchuTxamt, FnftxSbtrPmtTxamt, AprpAfthPmtTxamt, SurcRtnClCd, TmonCrfwRfndTxamt
+	         , RtnRfndClCd, RfndAplnAmt, VatRtnYr, Txtpe, VatActlPmtTxamt
+	         , VlntSbtrPmtTxamt, RegId, RegDt
+          FROM S_Hometax_Z5002
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSHometaxZ0006List" resultType="SHometaxZ0006" parameterType="SHometaxZ0006">
+        SELECT CompCd, SupByr, TaxGb, WrtYr, WrtQt
+	         , WrtDtFrom, WrtDtTo, WithIn_bsnoIsnClplcCnt, WithIn_bsnoIsnScnt, WithIn_bsnoIsnSplCft
+ 	         , WithIn_bsnoIsnTxamt, WithIn_resnoIsnClplcCnt, WithIn_resnoIsnScnt, WithIn_resnoIsnSplCft , WithIn_resnoIsnTxamt
+	         , WithIn_totCnt, WithIn_totPurchplcCnt, WithIn_totSellplcCnt, WithIn_totSplCft, WithIn_totTxamt
+	         , Et_bsnoIsnClplcCnt, Et_bsnoIsnScnt, Et_bsnoIsnSplCft, Et_bsnoIsnTxamt, Et_resnoIsnClplcCnt
+	         , Et_resnoIsnScnt, Et_resnoIsnSplCft, Et_resnoIsnTxamt, Et_totCnt, Et_totPurchplcCnt
+	         , Et_totSellplcCnt, Et_totSplCft, Et_totTxamt, Rmk, ReqCd
+	         , RegId, RegDt
+          FROM S_Hometax_Z0006
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSHometaxZ0006DtlList" resultType="SHometaxZ0006Dtl" parameterType="SHometaxZ0006Dtl">
+        SELECT CompCd, SupByr, TaxGb, WrtYr, WrtQt
+	         , WrtDt, Etan, WrtDtFrom, WrtDtTo, IsnDtm
+	         , TmsnDt, DmnrTxprDscmNo, DmnrMpbNoStr, TnmNm, RprsFnm
+	         , TotaAmt, SupSplCft, SumTxamt, EtxivKndCd, IsnTypeCd
+	         , EtxivSq1RmrkCntn, RecApeClCd, MchrgEmlAdrSls, MchrgEmlAdrPrh, Rmk
+	         , ReqCd, RegId, RegDt
+          FROM S_Hometax_Z0006_Dtl
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSCardsalesB0002List" resultType="SCardsalesB0002" parameterType="SCardsalesB0002">
+        SELECT CompCd, MerNo, CardNm, StlBankNm, StlAcctNo
+	         , SinYongFeeRate, CheckFeeRateB, CheckFeeRateC, PymPeriod, Rmk
+	         , ReqCd, RegId, RegDt
+	      FROM S_Cardsales_B0002
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSCardsalesB0011DtlList" resultType="SCardsalesB0011Dtl" parameterType="SCardsalesB0011Dtl">
+        SELECT CompCd, TrDt, TrTm, CardRealNo, ApprNo
+	         , TrDiv, CardCorp1, CardCorp2, MerNo, CardKndCd
+	         , CardKnd, CardNum, ApprAmt, InstDiv, InsTrm
+	         , Rmk, ReqCd, RegId, RegDt
+	      FROM S_Cardsales_B0011_Dtl
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSCardsalesB0011SumList" resultType="SCardsalesB0011Sum" parameterType="SCardsalesB0011Sum">
+        SELECT CompCd, TrDt, TrSumAmt, TrSumCnt, ApprSumAmt
+	         , ApprSumCnt, CanSumAmt, CanSumCnt, Rmk, ReqCd
+	         , RegId, RegDt
+	      FROM S_Cardsales_B0011_Sum
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSCardsalesB0021DtlList" resultType="SCardsalesB0021Dtl" parameterType="SCardsalesB0021Dtl">
+        SELECT CompCd, TrDt, BuyDt, ApprNo, CardCorp1
+	         , CardCorp2, MerNo, CardKnd, CardNum, CardDivCd
+	         , CardDiv, BuyAmt, CommMem, CommPoint, CommEtc
+	         , CommSum, CommVat, PayAmt, PayDt, Rmk
+	         , ReqCd, RegId, RegDt
+	      FROM S_Cardsales_B0021_Dtl
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSCardsalesB0021SumList" resultType="SCardsalesB0021Sum" parameterType="SCardsalesB0021Sum">
+        SELECT CompCd, BuyDt, BuySumAmt, BuySumCnt, PaySumAmt
+	         , Rmk, ReqCd, CommMem, CommPoint, CommEtc
+	         , CommSum, CommVat, RegId, RegDt
+	      FROM S_Cardsales_B0021_Sum
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSCardsalesB0031DtlList" resultType="SCardsalesB0031Dtl" parameterType="SCardsalesB0031Dtl">
+        SELECT CompCd, PayDt, MemNo, AcctNo, CardCorp1
+	         , Bank, SalesCnt, SalesAmt, DetAmt, CommVat
+	         , EtcAmt, RealPayAmt, Rmk, ReqCd, RegId
+	         , RegDt
+	      FROM S_Cardsales_B0031_Dtl
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSCardsalesB0031SumList" resultType="SCardsalesB0031Sum" parameterType="SCardsalesB0031Sum">
+        SELECT CompCd, PayDt, SalesSumAmt, SalesSumCnt, PaySumAmt
+             , Rmk, ReqCd, RegId, RegDt
+          FROM S_Cardsales_B0031_Sum
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSBankB0002List" resultType="SBankB0002" parameterType="SBankB0002">
+        SELECT CompCd, AcctNo, TrDt, TrTm, Balance
+	         , BankCd, InAmt, OutAmt, TrBr, TrNm
+	         , TrTp, TrDetail, RecvAcctNo, Memo, Rmk
+	         , ReqCd, TrRnd, Wlbn, RegId, RegDt
+	      FROM S_Bank_B0002
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSCbkB0002List" resultType="SCbkB0002" parameterType="SCbkB0002">
+        SELECT CompCd, AcctNo, TrDt, TrTm, Balance
+	         , BankCd, InAmt, OutAmt, CurCd, TrBr
+	         , TrNm, TrTp, TrDetail, RecvAcctNo, Rmk
+	         , ReqCd, TrRnd, Wlbn, Memo, RegId
+	         , RegDt
+	      FROM S_Cbk_B0002
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSSbkB0002List" resultType="SSbkB0002" parameterType="SSbkB0002">
+        SELECT CompCd, AcctNo, TrDt, TrTm, Balance
+             , BankCd, InAmt, OutAmt, TrBr, TrNm
+             , TrTp, TrDetail, RecvAcctNo, Memo, Rmk
+             , ReqCd, TrRnd, Wlbn, RegId, RegDt
+          FROM S_Sbk_B0002
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSCardC0005List" resultType="SCardC0005" parameterType="SCardC0005">
+        SELECT CompCd, UseDt, UseTm, ApprNo, UseCard
+	         , UseStore, UseAmt, UseDiv, ApprSt, PartialCancelAmt
+	         , InstMon, DiscAmt, SavePoint, SettleDt, StoreBizNo
+	         , StoreCeo, StoreAddr, StoreTel, StoreType, ExYn
+	         , ExCurCd, UseExAmt, AddTax, Tip, StoreBizNo2
+	         , Rmk, ReqCd, GivenCardNo, RegId, RegDt
+	      FROM S_Card_C0005
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSCcdC0005List" resultType="SCcdC0005" parameterType="SCcdC0005">
+        SELECT CompCd, UseDt, UseTm, ApprNo, UseCard
+	         , UseStore, UseAmt, UseExAmt, ExCurCd, UseDiv
+	         , ApprSt, InstMon, DiscAmt, SavePoint, SettleDt
+	         , StoreBizNo, StoreCeo, StoreAddr, StoreTel, StoreType
+	         , AddTax, Tip, TaxType, StoreSt, StoreNo
+	         , Rmk, ReqCd, GivenCardNo, RegId, RegDt
+	      FROM S_Ccd_C0005
+	     WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd} 
+    </select>
+</mapper>

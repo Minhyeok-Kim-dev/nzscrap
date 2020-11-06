@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- Quartz -->
+    <!-- Quartz 2.x 버전 -->
+    <beans:bean name="scrapJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <beans:property name="jobClass">
+            <beans:value>com.newzen.nzscrap.util.ScrapExcutor</beans:value>
+        </beans:property>
+        <beans:property name="jobDataAsMap">
+            <beans:map>
+                <beans:entry key="scrapService" value-ref="scrapService"/>
+            </beans:map>
+        </beans:property>
+    </beans:bean>
+    
+    <beans:bean id="scrapService" class="com.newzen.nzscrap.service.ScrapServiceImpl" />
+    
+    <beans:bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        
+        <beans:property name="jobDetail">
+            <beans:ref bean="scrapJob"/>
+        </beans:property>
+        
+        <beans:property name="cronExpression">
+            <!-- 매  5분마다 실행 --> 
+            <beans:value>0 0/5 * * * ?</beans:value>
+            <!-- 매일 오후 3시 20분마다 실행  -->
+            <!-- <value>0 20 15 * * ?</value> -->
+        </beans:property>
+    </beans:bean>
+    
+    <beans:bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <beans:property name="triggers">
+            <beans:list>
+                <beans:ref bean="cronTrigger"/>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.newzen.nzscrap" />
+	
+	<!-- properties -->
+    <context:property-placeholder location="/WEB-INF/properties/*.properties"/>
+    
+    <!-- DB Connect (MariaDB)-->   
+    <beans:bean id="dataSourceSpied" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <beans:property name="driverClassName" value="${jdbc.maria.driverClassName}"/>
+        <beans:property name="url" value="${jdbc.maria.url}"/>
+        <beans:property name="username" value="${jdbc.maria.username}"/>
+        <beans:property name="password" value="${jdbc.maria.password}"/>
+    </beans:bean>
+	
+	<beans:bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <beans:constructor-arg ref="dataSourceSpied" />
+    </beans:bean>
+    
+    <beans:bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <beans:constructor-arg ref="dataSource" />
+    </beans:bean>
+    
+    <beans:bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <beans:property name="dataSource" ref="dataSource" />
+    </beans:bean>
+    
+    <beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <beans:property name="dataSource" ref="dataSource" />
+        <beans:property name="mapperLocations" value="classpath*:mapper/**/*.xml" />
+        <beans:property name="typeAliasesPackage" value="com.newzen.nzscrap"/>
+    </beans:bean>
+    
+    <beans:bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <beans:property name="basePackage" value="com.newzen.nzscrap.**.**.mapper" />
+        <beans:property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </beans:bean> 
+    
+    <beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <beans:constructor-arg ref="sqlSessionFactory" />
+    </beans:bean>   
+</beans:beans>

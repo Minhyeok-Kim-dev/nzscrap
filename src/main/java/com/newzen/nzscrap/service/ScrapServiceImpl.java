@@ -58,6 +58,7 @@ import com.newzen.nzscrap.model.dto.SHometaxZ4010;
 import com.newzen.nzscrap.model.dto.SHometaxZ4020;
 import com.newzen.nzscrap.model.dto.SHometaxZ4050;
 import com.newzen.nzscrap.model.dto.SHometaxZ4060;
+import com.newzen.nzscrap.model.dto.SHometaxZ4070;
 import com.newzen.nzscrap.model.dto.SHometaxZ5002;
 import com.newzen.nzscrap.model.dto.SSbkB0002;
 import com.newzen.nzscrap.model.dto.ServerScrapReqParam;
@@ -86,7 +87,7 @@ public class ScrapServiceImpl implements ScrapService {
 	@Override
 	public String scrap() {
 		try {
-			HashMap<String, String> scrapListMap = getBizbooksScrapSchedule("20200101", "20201105");
+			HashMap<String, String> scrapListMap = getBizbooksScrapSchedule("20200101", "20201109");
 			//HashMap<String, String> scrapListMap = getBizbooksScrapSchedule("", "");
 			
 			for(Map.Entry<String, String> entry : scrapListMap.entrySet()) {
@@ -108,7 +109,10 @@ public class ScrapServiceImpl implements ScrapService {
 				*/
 
 				//if(compCd.equals("D000000266" )) {
-				if(compCd.equals("D000000270") || compCd.equals("D000000271")) {
+				//if(compCd.equals("D00095")) {
+				//if(compCd.equals("D000000129")) {
+				if(compCd.equals("D00032")) {
+				//if(compCd.equals("D000000270") || compCd.equals("D000000271")) {
 					System.out.println("########### " + compCd);
 					scrapByCompCd(compCd, jsonReqParam);
 				}
@@ -344,6 +348,16 @@ public class ScrapServiceImpl implements ScrapService {
 					scrapMapper.insertSHometaxZ4060List((ArrayList<SHometaxZ4060>) dataList);
 				}
 				break;
+			// - 수출실적명세서 조회
+			case "hometaxZ4070":
+				dataList = objectMapper.reader()
+					.forType(new TypeReference<ArrayList<SHometaxZ4070>>() {})
+					.readValue(jsonData);
+				
+				if(dataList.size() > 0) {
+					scrapMapper.insertSHometaxZ4070List((ArrayList<SHometaxZ4070>) dataList);
+				}
+				break;
 			// - 세금신고 접수증조회
 			case "hometaxZ5002":
 				dataList = objectMapper.reader()
@@ -516,33 +530,6 @@ public class ScrapServiceImpl implements ScrapService {
 		
 		try {
 			switch(dataType) {
-			// 홈택스
-			// - 사업용 화물복지 신용카드
-			case "hometaxZ4010":
-				{
-					dataList = objectMapper.reader()
-							.forType(new TypeReference<ArrayList<SHometaxZ4010>>() {})
-							.readValue(jsonData);
-					SHometaxZ4010 deleteParam = (SHometaxZ4010) dataList.get(0);
-					deleteParam.setFromDt(((SHometaxZ4010) dataList.get(dataList.size() - 1)).getAprvDt());
-					deleteParam.setToDt(deleteParam.getAprvDt());
-					
-					scrapMapper.deleteSHometaxZ4010List(deleteParam);
-					break;
-				}
-			case "hometaxZ4020":
-				{
-					dataList = objectMapper.reader()
-							.forType(new TypeReference<ArrayList<SHometaxZ4020>>() {})
-							.readValue(jsonData);
-					SHometaxZ4020 deleteParam = (SHometaxZ4020) dataList.get(0);
-					deleteParam.setFromDt(((SHometaxZ4020) dataList.get(dataList.size() - 1)).getTrsDt());
-					deleteParam.setToDt(deleteParam.getTrsDt());
-					
-					scrapMapper.deleteSHometaxZ4020List(deleteParam);
-					break;			
-				}
-				
 			// 여신
 			// - 기간별승인내역(일별)_상세
 			case "cardsalesB0011Dtl":
@@ -557,20 +544,6 @@ public class ScrapServiceImpl implements ScrapService {
 					
 					scrapMapper.deleteSCardsalesB0011DtlList(deleteParam);
 					break;			
-				}
-			// - 기간별매입내역(일별)_상세
-			case "cardsalesB0021Dtl":
-				{
-					dataList = objectMapper.reader()
-							.forType(new TypeReference<ArrayList<SCardsalesB0021Dtl>>() {})
-							.readValue(jsonData);
-					
-					SCardsalesB0021Dtl deleteParam = (SCardsalesB0021Dtl) dataList.get(0);
-					deleteParam.setFromDt(deleteParam.getTrDt());
-					deleteParam.setToDt(((SCardsalesB0021Dtl) dataList.get(dataList.size() - 1)).getTrDt());
-					
-					scrapMapper.deleteSCardsalesB0021DtlList(deleteParam);
-					break;
 				}
 			// - 기간별입금내역_상세
 			case "cardsalesB0031Dtl":
@@ -689,6 +662,13 @@ public class ScrapServiceImpl implements ScrapService {
 							sHometaxZ4060Param.setCompCd(compCd);
 							sHometaxZ4060Param.setReqCd(reqCd);
 							dataListMap.put("hometaxZ4060", scrapMapper.selectSHometaxZ4060List(sHometaxZ4060Param));
+							break;
+						// - 수출실적명세서 조회
+						case "Z4070":
+							SHometaxZ4070 sHometaxZ4070Param = new SHometaxZ4070();
+							sHometaxZ4070Param.setCompCd(compCd);
+							sHometaxZ4070Param.setReqCd(reqCd);
+							dataListMap.put("hometaxZ4070", scrapMapper.selectSHometaxZ4070List(sHometaxZ4070Param));
 							break;
 						// - 세금신고 접수증조회
 						case "Z5002":
@@ -823,24 +803,6 @@ public class ScrapServiceImpl implements ScrapService {
 				String jsonDelData = "";
 				
 				switch(key) {
-					// 홈택스
-					// - 사업용 화물복지 신용카드
-					case "hometaxZ4010": {
-						SHometaxZ4010 deleteParam = (SHometaxZ4010) dataList.get(0);
-						deleteParam.setFromDt(((SHometaxZ4010) dataList.get(dataList.size() - 1)).getAprvDt());
-						deleteParam.setToDt(deleteParam.getAprvDt());
-	
-						jsonDelData = objectMapper.writeValueAsString(deleteParam);
-						break;
-					}
-					case "hometaxZ4020": {
-						SHometaxZ4020 deleteParam = (SHometaxZ4020) dataList.get(0);
-						deleteParam.setFromDt(((SHometaxZ4020) dataList.get(dataList.size() - 1)).getTrsDt());
-						deleteParam.setToDt(deleteParam.getTrsDt());
-						
-						jsonDelData = objectMapper.writeValueAsString(deleteParam);
-						break;
-					}
 					// 여신
 					// - 기간별승인내역(일별)_상세
 					case "cardsalesB0011Dtl": {
@@ -851,15 +813,7 @@ public class ScrapServiceImpl implements ScrapService {
 						jsonDelData = objectMapper.writeValueAsString(deleteParam);
 						break;
 					}
-					// - 기간별매입내역(일별)_상세
-					case "cardsalesB0021Dtl": {
-						SCardsalesB0021Dtl deleteParam = (SCardsalesB0021Dtl) dataList.get(0);
-						deleteParam.setFromDt(deleteParam.getTrDt());
-						deleteParam.setToDt(((SCardsalesB0021Dtl) dataList.get(dataList.size() - 1)).getTrDt());
-						
-						jsonDelData = objectMapper.writeValueAsString(deleteParam);
-						break;
-					}
+					
 					// - 기간별입금내역_상세
 					case "cardsalesB0031Dtl": {
 						SCardsalesB0031Dtl deleteParam = (SCardsalesB0031Dtl) dataList.get(0);
@@ -1035,6 +989,10 @@ public class ScrapServiceImpl implements ScrapService {
 						break;
 					case "Z4060": // 현금영수증 매출총액 조회
 						inJsonHometax.setStlYr(reqParam.getStlYr());
+						break;
+					case "Z4070": // 수출실적명세서 조회
+						inJsonHometax.setDtCd("01");	// 조회구분 - 01:월별 (default)
+						inJsonHometax.setWrtArr(reqParam.getWrtArr());
 						break;
 					case "Z0006": // 부가세 합계표 조회
 						inJsonHometax.setSupByr(reqParam.getSupByr());
@@ -1286,6 +1244,7 @@ public class ScrapServiceImpl implements ScrapService {
 		ArrayList<SHometaxZ4020> sHometaxZ4020List = new ArrayList<>();
 		ArrayList<SHometaxZ4050> sHometaxZ4050List = new ArrayList<>();
 		ArrayList<SHometaxZ4060> sHometaxZ4060List = new ArrayList<>();
+		ArrayList<SHometaxZ4070> sHometaxZ4070List = new ArrayList<>();
 		ArrayList<SHometaxZ5002> sHometaxZ5002List = new ArrayList<>(); 
 		ArrayList<SCardsalesB0002> sCardsalesB0002List = new ArrayList<>();
 		ArrayList<SCardsalesB0011Dtl> sCardsalesB0011DtlList = new ArrayList<>();
@@ -1420,6 +1379,19 @@ public class ScrapServiceImpl implements ScrapService {
 									sHometaxZ4060.setCompCd(compCd);
 									sHometaxZ4060.setReqCd(reqCd);
 									sHometaxZ4060List.add(sHometaxZ4060);
+								}
+							}
+							break;
+						}
+						// - 수출실적명세서 조회
+						case "Z4070": {
+							ArrayList<SHometaxZ4070> list = 
+									objectMapper.convertValue(outJson.get("list"), new TypeReference<ArrayList<SHometaxZ4070>>() {});
+							if(list != null && list.size() > 0) {
+								for(SHometaxZ4070 sHometaxZ4070 : list) {
+									sHometaxZ4070.setCompCd(compCd);
+									sHometaxZ4070.setReqCd(reqCd);
+									sHometaxZ4070List.add(sHometaxZ4070);
 								}
 							}
 							break;
@@ -1808,6 +1780,7 @@ public class ScrapServiceImpl implements ScrapService {
 		insertDataMap.put("hometaxZ4020", sHometaxZ4020List);
 		insertDataMap.put("hometaxZ4050", sHometaxZ4050List);
 		insertDataMap.put("hometaxZ4060", sHometaxZ4060List);
+		insertDataMap.put("hometaxZ4070", sHometaxZ4070List);
 		insertDataMap.put("hometaxZ5002", sHometaxZ5002List);
 		insertDataMap.put("hometaxZ0006", sHometaxZ0006List);
 		insertDataMap.put("hometaxZ0006Dtl", sHometaxZ0006DtlList);
@@ -1840,10 +1813,7 @@ public class ScrapServiceImpl implements ScrapService {
 
 				// delete -> insert 필요한 항목들 처리
 				switch(key) {
-					case "hometaxZ4010":
-					case "hometaxZ4020":
 					case "cardsalesB0011Dtl":
-					case "cardsalesB0021Dtl":
 					case "cardsalesB0031Dtl":
 						deleteData(key, jsonData);
 						break;
@@ -2001,7 +1971,6 @@ public class ScrapServiceImpl implements ScrapService {
 						&& reqParam.getSvcCd().equals("Z5002") 
 						&& reqParam.getItrfCd().equals("10")) {
 					if(reqParam.getBizNo() != null) {
-						
 						try {
 							reqParam.setBizNo(aes256CompRegsNo.decrypt(reqParam.getBizNo()));
 						} catch(Exception ex2) {

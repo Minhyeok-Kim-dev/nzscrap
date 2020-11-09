@@ -7,23 +7,22 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  * 홈택스_화물운전자복지카드 매입세액 공제금액 조회 DTO
  * 
- * !! 주의 	- 해당 DTO를 유일하게 식별할 키가 없으므로 keyNo를 둠..
- *       	- 내용 insert시 CompCd, trsDt (from ~ to)에 해당하는 내용 삭제 후 insert
+ * 201109_kmh 
+ * - 날짜 and 공급가액(or 합계금액) and 사업자번호 동일할 경우 중복으로 체크
  *
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SHometaxZ4020 {
-	private int keyNo;						// 키 번호(A.I) - 유일한 식별키가 없음
-	private String compCd;					// 회사코드
-	private String trsDt;					// 거래일자
-	private String crccTxprNm;				// 카드사
+	private String compCd;					// 회사코드	(P)
+	private String trsDt;					// 거래일자	(P)
+	private String crccTxprNm;				// 카드사		
 	private String wlfCardNoEncCntn;		// 카드번호
-	private String mrntTxprDscmNoEncCntn;	// 가맹점사업자번호
+	private String mrntTxprDscmNoEncCntn;	// 가맹점사업자번호	(P)
 	private String mrntTxprNm;				// 가맹점명
-	private String splCft;					// 공급가액
+	private String splCft;					// 공급가액	(P)
 	private String vaTxamt;					// 세액
 	private String tip;						// 봉사료
-	private String totaTrsAmt;				// 합계
+	private String totaTrsAmt;				// 합계		(P)
 	private String bmanClNm;				// 가맹점유형
 	private String tfbNm;					// 가맹점업종
 	private String trsClNm;					// 거래구분
@@ -39,12 +38,6 @@ public class SHometaxZ4020 {
 	private String fromDt;					// 거래일자 시작일 (삭제시 사용)
 	private String toDt;					// 거래일자 종료일 (삭제시 사용)
 
-	public int getKeyNo() {
-		return keyNo;
-	}
-	public void setKeyNo(int keyNo) {
-		this.keyNo = keyNo;
-	}
 	public String getCompCd() {
 		return compCd;
 	}
@@ -185,12 +178,12 @@ public class SHometaxZ4020 {
 	}
 	@Override
 	public String toString() {
-		return "SHometaxZ4020 [keyNo=" + keyNo + ", compCd=" + compCd + ", trsDt=" + trsDt + ", crccTxprNm="
-				+ crccTxprNm + ", wlfCardNoEncCntn=" + wlfCardNoEncCntn + ", mrntTxprDscmNoEncCntn="
-				+ mrntTxprDscmNoEncCntn + ", mrntTxprNm=" + mrntTxprNm + ", splCft=" + splCft + ", vaTxamt=" + vaTxamt
-				+ ", tip=" + tip + ", totaTrsAmt=" + totaTrsAmt + ", bmanClNm=" + bmanClNm + ", tfbNm=" + tfbNm
-				+ ", trsClNm=" + trsClNm + ", ddcYnNm=" + ddcYnNm + ", vatDdcClNm=" + vatDdcClNm + ", rmk=" + rmk
-				+ ", reqCd=" + reqCd + ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId + ", uptDt=" + uptDt
-				+ ", fromDt=" + fromDt + ", toDt=" + toDt + "]";
+		return "SHometaxZ4020 [compCd=" + compCd + ", trsDt=" + trsDt + ", crccTxprNm=" + crccTxprNm
+				+ ", wlfCardNoEncCntn=" + wlfCardNoEncCntn + ", mrntTxprDscmNoEncCntn=" + mrntTxprDscmNoEncCntn
+				+ ", mrntTxprNm=" + mrntTxprNm + ", splCft=" + splCft + ", vaTxamt=" + vaTxamt + ", tip=" + tip
+				+ ", totaTrsAmt=" + totaTrsAmt + ", bmanClNm=" + bmanClNm + ", tfbNm=" + tfbNm + ", trsClNm=" + trsClNm
+				+ ", ddcYnNm=" + ddcYnNm + ", vatDdcClNm=" + vatDdcClNm + ", rmk=" + rmk + ", reqCd=" + reqCd
+				+ ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId + ", uptDt=" + uptDt + ", fromDt="
+				+ fromDt + ", toDt=" + toDt + "]";
 	}
 }

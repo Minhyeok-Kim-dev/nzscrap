@@ -161,6 +161,12 @@
 	        , #{item.vatDdcClNm}, #{item.rmk}, #{item.reqCd}, 'admin', now()  
             )
         </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , AprvDt = VALUES(AprvDt)
+         , SplCft = VALUES(SplCft) 
+         , TotaTrsAmt = VALUES(TotaTrsAmt) 
+         , MrntTxprDscmNoEncCntn = VALUES(MrntTxprDscmNoEncCntn)
     </insert>
     
     <insert id="insertSHometaxZ4020List" parameterType="java.util.List">
@@ -180,6 +186,12 @@
 	        , #{item.rmk}, #{item.reqCd}, 'admin', now()  
             )
         </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , TrsDt = VALUES(TrsDt)
+         , SplCft = VALUES(SplCft) 
+         , TotaTrsAmt = VALUES(TotaTrsAmt) 
+         , MrntTxprDscmNoEncCntn = VALUES(MrntTxprDscmNoEncCntn)
     </insert>
     
     <insert id="insertSHometaxZ4050List" parameterType="java.util.List">
@@ -220,6 +232,29 @@
         ON DUPLICATE KEY UPDATE 
            CompCd = VALUES(CompCd)
          , SttsYm = VALUES(SttsYm)
+    </insert>
+    
+    <insert id="insertSHometaxZ4070List" parameterType="java.util.List">
+        INSERT INTO S_Hometax_Z4070
+        (
+          CompCd, ExprRtnNo, ShpnDt, IsoCrncCd, Exgrt
+        , Fmt, Wtt, Rmk, ReqCd, RegId
+        , RegDt
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+              #{item.compCd}, #{item.exprRtnNo}, #{item.shpnDt}, #{item.isoCrncCd}, #{item.exgrt}
+	        , #{item.fmt}, #{item.wtt}, #{item.rmk}, #{item.reqCd}, 'admin'
+	        , now()
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE 
+           CompCd = VALUES(CompCd)
+         , ExprRtnNo = VALUES(ExprRtnNo)
+         , ShpnDt = VALUES(ShpnDt)
+         , IsoCrncCd = VALUES(IsoCrncCd)
+         , Fmt = VALUES(Fmt)
     </insert>
     
     <insert id="insertSHometaxZ5002List" parameterType="java.util.List">
@@ -406,8 +441,9 @@
         ON DUPLICATE KEY UPDATE 
            CompCd = VALUES(CompCd)
          , TrDt = VALUES(TrDt)
-         , BuyDt = VALUES(BuyDt)
-         , ApprNo = VALUES(ApprNo)
+         , BuyDt = VALUES(BuyDt) 
+         , ApprNo = VALUES(ApprNo) 
+         , PayAmt = VALUES(PayAmt)
     </insert>
     
     <insert id="insertSCardsalesB0021SumList" parameterType="java.util.List">
@@ -600,34 +636,9 @@
     </insert>
     
     
-    
-    <delete id="deleteSHometaxZ4010List" parameterType="SHometaxZ4010">
-        DELETE 
-          FROM S_Hometax_Z4010
-         WHERE 1 = 1
-           AND CompCd = #{compCd}
-           AND AprvDt BETWEEN #{fromDt} AND #{toDt}
-    </delete>
-    
-    <delete id="deleteSHometaxZ4020List" parameterType="SHometaxZ4020">
-        DELETE 
-          FROM S_Hometax_Z4020
-         WHERE 1 = 1
-           AND CompCd = #{compCd}
-           AND TrsDtDt BETWEEN #{fromDt} AND #{toDt}
-    </delete>
-    
     <delete id="deleteSCardsalesB0011DtlList" parameterType="SCardsalesB0011Dtl">
         DELETE
           FROM S_Cardsales_B0011_Dtl
-         WHERE 1 = 1
-           AND CompCd = #{compCd}
-           AND TrDt BETWEEN #{fromDt} AND #{toDt}
-    </delete>
-    
-    <delete id="deleteSCardsalesB0021DtlList" parameterType="SCardsalesB0021Dtl">
-        DELETE
-          FROM S_Cardsales_B0021_Dtl
          WHERE 1 = 1
            AND CompCd = #{compCd}
            AND TrDt BETWEEN #{fromDt} AND #{toDt}
@@ -751,6 +762,16 @@
              , CshSlsAmt, CshSlsScnt, Rmk, ReqCd, RegId
              , RegDt
           FROM S_Hometax_Z4060
+         WHERE 1 = 1
+           AND CompCd = #{compCd}
+           AND ReqCd = #{reqCd}
+    </select>
+    
+    <select id="selectSHometaxZ4070List" resultType="SHometaxZ4070" parameterType="SHometaxZ4060">
+        SELECT CompCd, ExprRtnNo, ShpnDt, IsoCrncCd, Exgrt
+	         , Fmt, Wtt, Rmk, ReqCd, RegId
+	         , RegDt
+          FROM S_Hometax_Z4070
          WHERE 1 = 1
            AND CompCd = #{compCd}
            AND ReqCd = #{reqCd}

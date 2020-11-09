@@ -51,6 +51,9 @@ public class ServerScrapReqParam {
 	// 현금영수증 매출자료 조회 (Z4060)
 	private String stlYr;		// 조회년도
 	
+	// 수출실적명세서 조회 (Z4070)
+	private String wrtArr;		// 멀티조회월 (ex: '202001,202002,...') 
+	
 	// 부가세 신고용합계표 (Z0006)
 	private String supByr;		// 매출/매입 (AL:전체, 01:매출, 02:매입)
 	private String taxGb;		// 세금계산서구분 (01:전자세금계산서, 03:전자계산서)
@@ -231,6 +234,12 @@ public class ServerScrapReqParam {
 	public void setStlYr(String stlYr) {
 		this.stlYr = stlYr;
 	}
+	public String getWrtArr() {
+		return wrtArr;
+	}
+	public void setWrtArr(String wrtArr) {
+		this.wrtArr = wrtArr;
+	}
 	public String getSupByr() {
 		return supByr;
 	}
@@ -263,7 +272,7 @@ public class ServerScrapReqParam {
 				+ ", fromDt=" + fromDt + ", toDt=" + toDt + ", bankCd=" + bankCd + ", acctNo=" + acctNo + ", acctPw="
 				+ acctPw + ", cardCd=" + cardCd + ", cardNo=" + cardNo + ", keyCd=" + keyCd + ", reqCd=" + reqCd
 				+ ", scrapMode=" + scrapMode + ", logInType=" + logInType + ", itrfCd=" + itrfCd + ", fromY=" + fromY
-				+ ", toY=" + toY + ", fromQ=" + fromQ + ", toQ=" + toQ + ", stlYr=" + stlYr + ", supByr=" + supByr
-				+ ", taxGb=" + taxGb + ", wrtYr=" + wrtYr + ", wrtQt=" + wrtQt + "]";
+				+ ", toY=" + toY + ", fromQ=" + fromQ + ", toQ=" + toQ + ", stlYr=" + stlYr + ", wrtArr=" + wrtArr
+				+ ", supByr=" + supByr + ", taxGb=" + taxGb + ", wrtYr=" + wrtYr + ", wrtQt=" + wrtQt + "]";
 	}
 }

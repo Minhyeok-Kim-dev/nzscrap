@@ -7,14 +7,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  *
  * 여신_기간별매입내역(일별)_상세 DTO
  *
+ * 201109_kmh 
+ * - 거래일 and 매입일 and 승인번호 and 지급금액 같으면 중복으로 체크
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SCardsalesB0021Dtl {
-	private int keyNo;			// 키 번호(A.I)
-	private String compCd;		// 회사코드
-	private String trDt;		// 거래일자
-	private String buyDt;		// 매입일자
-	private String apprNo;		// 승인번호
+	private String compCd;		// 회사코드	(P)
+	private String trDt;		// 거래일자	(P)
+	private String buyDt;		// 매입일자	(P)
+	private String apprNo;		// 승인번호	(P)
 	private String cardCorp1;	// 카드사명
 	private String cardCorp2;	// 제휴카드사명
 	private String merNo;		// 가맹점번호
@@ -28,7 +29,7 @@ public class SCardsalesB0021Dtl {
 	private String commEtc;		// 수수료_기타
 	private String commSum;		// 수수료_계
 	private String commVat;		// 부가세대리납부금액
-	private String payAmt;		// 지급금액
+	private String payAmt;		// 지급금액	(P)
 	private String payDt;		// 지급예정일
 	private String rmk;			// 비고
 	private String reqCd;		// 요청코드
@@ -40,12 +41,6 @@ public class SCardsalesB0021Dtl {
 	private String fromDt;		// _거래일자 시작일 (삭제시 사용)
 	private String toDt;		// _거래일자 종료일 (삭제시 사용)
 
-	public int getKeyNo() {
-		return keyNo;
-	}
-	public void setKeyNo(int keyNo) {
-		this.keyNo = keyNo;
-	}
 	public String getCompCd() {
 		return compCd;
 	}
@@ -210,12 +205,12 @@ public class SCardsalesB0021Dtl {
 	}
 	@Override
 	public String toString() {
-		return "SCardsalesB0021Dtl [keyNo=" + keyNo + ", compCd=" + compCd + ", trDt=" + trDt + ", buyDt=" + buyDt
-				+ ", apprNo=" + apprNo + ", cardCorp1=" + cardCorp1 + ", cardCorp2=" + cardCorp2 + ", merNo=" + merNo
-				+ ", cardKnd=" + cardKnd + ", cardNum=" + cardNum + ", cardDivCd=" + cardDivCd + ", cardDiv=" + cardDiv
-				+ ", buyAmt=" + buyAmt + ", commMem=" + commMem + ", commPoint=" + commPoint + ", commEtc=" + commEtc
-				+ ", commSum=" + commSum + ", commVat=" + commVat + ", payAmt=" + payAmt + ", payDt=" + payDt + ", rmk="
-				+ rmk + ", reqCd=" + reqCd + ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId + ", uptDt="
-				+ uptDt + ", fromDt=" + fromDt + ", toDt=" + toDt + "]";
+		return "SCardsalesB0021Dtl [compCd=" + compCd + ", trDt=" + trDt + ", buyDt=" + buyDt + ", apprNo=" + apprNo
+				+ ", cardCorp1=" + cardCorp1 + ", cardCorp2=" + cardCorp2 + ", merNo=" + merNo + ", cardKnd=" + cardKnd
+				+ ", cardNum=" + cardNum + ", cardDivCd=" + cardDivCd + ", cardDiv=" + cardDiv + ", buyAmt=" + buyAmt
+				+ ", commMem=" + commMem + ", commPoint=" + commPoint + ", commEtc=" + commEtc + ", commSum=" + commSum
+				+ ", commVat=" + commVat + ", payAmt=" + payAmt + ", payDt=" + payDt + ", rmk=" + rmk + ", reqCd="
+				+ reqCd + ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId + ", uptDt=" + uptDt
+				+ ", fromDt=" + fromDt + ", toDt=" + toDt + "]";
 	}
 }

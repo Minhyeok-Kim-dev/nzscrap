@@ -27,6 +27,7 @@ import com.newzen.nzscrap.model.dto.SHometaxZ4010;
 import com.newzen.nzscrap.model.dto.SHometaxZ4020;
 import com.newzen.nzscrap.model.dto.SHometaxZ4050;
 import com.newzen.nzscrap.model.dto.SHometaxZ4060;
+import com.newzen.nzscrap.model.dto.SHometaxZ4070;
 import com.newzen.nzscrap.model.dto.SHometaxZ5002;
 import com.newzen.nzscrap.model.dto.SSbkB0002;
 
@@ -43,6 +44,7 @@ public interface ScrapMapper {
 	int insertSHometaxZ4020List(ArrayList<SHometaxZ4020> sHometaxZ4020List);
 	int insertSHometaxZ4050List(ArrayList<SHometaxZ4050> sHometaxZ4050List);
 	int insertSHometaxZ4060List(ArrayList<SHometaxZ4060> sHometaxZ4060List);
+	int insertSHometaxZ4070List(ArrayList<SHometaxZ4070> sHometaxZ4070List);
 	int insertSHometaxZ5002List(ArrayList<SHometaxZ5002> sHometaxZ5002List);
 	int insertSHometaxZ0006List(ArrayList<SHometaxZ0006> sHometaxZ0006List);
 	int insertSHometaxZ0006DtlList(ArrayList<SHometaxZ0006Dtl> sHometaxZ0006DtlList);
@@ -59,10 +61,7 @@ public interface ScrapMapper {
 	int insertSCardC0005List(ArrayList<SCardC0005> sCardC0005List);
 	int insertSCcdC0005List(ArrayList<SCcdC0005> sCcdC0005List);
 	
-	int deleteSHometaxZ4010List(SHometaxZ4010 sHometaxZ4010);
-	int deleteSHometaxZ4020List(SHometaxZ4020 sHometaxZ4020);
 	int deleteSCardsalesB0011DtlList(SCardsalesB0011Dtl sCardsalesB0011Dtl);
-	int deleteSCardsalesB0021DtlList(SCardsalesB0021Dtl sCardsalesB0021Dtl);
 	int deleteSCardsalesB0031DtlList(SCardsalesB0031Dtl sCardsalesB0031Dtl);
 	
 	ArrayList<HistoryReq> selectHistoryReqList(HistoryReq historyReqParam);
@@ -75,6 +74,7 @@ public interface ScrapMapper {
 	ArrayList<SHometaxZ4020> selectSHometaxZ4020List(SHometaxZ4020 sHometaxZ4020Param);
 	ArrayList<SHometaxZ4050> selectSHometaxZ4050List(SHometaxZ4050 sHometaxZ4050Param);
 	ArrayList<SHometaxZ4060> selectSHometaxZ4060List(SHometaxZ4060 sHometaxZ4060Param);
+	ArrayList<SHometaxZ4070> selectSHometaxZ4070List(SHometaxZ4070 sHometaxZ4070Param);
 	ArrayList<SHometaxZ5002> selectSHometaxZ5002List(SHometaxZ5002 sHometaxZ5002Param);
 	ArrayList<SHometaxZ0006> selectSHometaxZ0006List(SHometaxZ0006 sHometaxZ0006Param);
 	ArrayList<SHometaxZ0006Dtl> selectSHometaxZ0006DtlList(SHometaxZ0006Dtl sHometaxZ0006DtlParam);

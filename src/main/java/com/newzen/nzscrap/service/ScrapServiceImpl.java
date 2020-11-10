@@ -88,8 +88,10 @@ public class ScrapServiceImpl implements ScrapService {
 	public String scrap() {
 		try {
 			HashMap<String, String> scrapListMap = getBizbooksScrapSchedule("20200101", "20201109");
-			//HashMap<String, String> scrapListMap = getBizbooksScrapSchedule("", "");
 			
+			long sTime = System.currentTimeMillis();
+			ArrayList<String> timeList = new ArrayList<>(); 
+
 			for(Map.Entry<String, String> entry : scrapListMap.entrySet()) {
 				String compCd = entry.getKey();
 				String jsonReqParam = entry.getValue();
@@ -111,11 +113,26 @@ public class ScrapServiceImpl implements ScrapService {
 				//if(compCd.equals("D000000266" )) {
 				//if(compCd.equals("D00095")) {
 				//if(compCd.equals("D000000129")) {
-				if(compCd.equals("D00032")) {
-				//if(compCd.equals("D000000270") || compCd.equals("D000000271")) {
-					System.out.println("########### " + compCd);
+				//if(compCd.equals("D00032")) {
+				//if(compCd.equals("D000000266") || compCd.equals("D000000267") || compCd.equals("D000000268") || 
+				//		compCd.equals("D000000269") || compCd.equals("D000000270") || compCd.equals("D000000271")) {
+				if(compCd.equals("D00123")) {
+					System.out.println(compCd);
+					
+					long ssTime = System.currentTimeMillis();
 					scrapByCompCd(compCd, jsonReqParam);
+					
+					long eeTime = System.currentTimeMillis();
+					
+					timeList.add("# comp time : " + compCd + " // " + (eeTime - ssTime));
 				}
+			}
+			
+			long eTime = System.currentTimeMillis();
+			System.out.println("## total time : " + (eTime - sTime));
+			
+			for(String s : timeList) {
+				System.out.println(s);
 			}
 			
 		} catch(Exception e) {

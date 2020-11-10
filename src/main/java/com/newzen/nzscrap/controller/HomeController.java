@@ -21,17 +21,16 @@ public class HomeController {
 			AES256Util aes256Util = new AES256Util(AES256Util.KEY_AGENT_ID);
 			AES256Util aes256Util2 = new AES256Util(AES256Util.KEY_USER_PW);
 			
+			
 			AES256Util tmp = new AES256Util(AES256Util.KEY_COMP_REGSNO);
 			
 			AES256Util agentIdUtil = new AES256Util(AES256Util.KEY_AGENT_ID);
 			AES256Util agentPwUtil = new AES256Util(AES256Util.KEY_AGENT_PW);
 			
 			String id = agentIdUtil.decrypt("IPRVDWXRDi74UBTCuo4jLA==");
-			String pw = agentPwUtil.decrypt("5wzb270ViaFVYamBnTTqWg==");
+			String pw = aes256Util2.decrypt("j0eeWsuuERCw/XSwN9IdxA==");
 					
-			String ret = tmp.decrypt("+3TMDwfW3/+et6eH0w9yYg==");
-			tmp.decrypt("+3TMDwfW3/+et6eH0w9yYg==");
-			tmp.decrypt("PlYK3FkxHimXEX4dLQ0JIg==");
+			
 			
 			
 			System.out.println(id);

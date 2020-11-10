@@ -29,14 +29,12 @@ public class SHometaxZ4020 {
 	private String ddcYnNm;					// 공제여부결정
 	private String vatDdcClNm;				// 비고_내역
 	private String rmk;						// 비고
+	private String markPen;					// 형광펜
 	private String reqCd;					// 요청코드
 	private String regId;					// 등록자ID
 	private String regDt;					// 등록일시
 	private String uptId;					// 수정자ID
 	private String uptDt;					// 수정일시
-	
-	private String fromDt;					// 거래일자 시작일 (삭제시 사용)
-	private String toDt;					// 거래일자 종료일 (삭제시 사용)
 
 	public String getCompCd() {
 		return compCd;
@@ -134,6 +132,12 @@ public class SHometaxZ4020 {
 	public void setRmk(String rmk) {
 		this.rmk = rmk;
 	}
+	public String getMarkPen() {
+		return markPen;
+	}
+	public void setMarkPen(String markPen) {
+		this.markPen = markPen;
+	}
 	public String getReqCd() {
 		return reqCd;
 	}
@@ -164,26 +168,14 @@ public class SHometaxZ4020 {
 	public void setUptDt(String uptDt) {
 		this.uptDt = uptDt;
 	}
-	public String getFromDt() {
-		return fromDt;
-	}
-	public void setFromDt(String fromDt) {
-		this.fromDt = fromDt;
-	}
-	public String getToDt() {
-		return toDt;
-	}
-	public void setToDt(String toDt) {
-		this.toDt = toDt;
-	}
 	@Override
 	public String toString() {
 		return "SHometaxZ4020 [compCd=" + compCd + ", trsDt=" + trsDt + ", crccTxprNm=" + crccTxprNm
 				+ ", wlfCardNoEncCntn=" + wlfCardNoEncCntn + ", mrntTxprDscmNoEncCntn=" + mrntTxprDscmNoEncCntn
 				+ ", mrntTxprNm=" + mrntTxprNm + ", splCft=" + splCft + ", vaTxamt=" + vaTxamt + ", tip=" + tip
 				+ ", totaTrsAmt=" + totaTrsAmt + ", bmanClNm=" + bmanClNm + ", tfbNm=" + tfbNm + ", trsClNm=" + trsClNm
-				+ ", ddcYnNm=" + ddcYnNm + ", vatDdcClNm=" + vatDdcClNm + ", rmk=" + rmk + ", reqCd=" + reqCd
-				+ ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId + ", uptDt=" + uptDt + ", fromDt="
-				+ fromDt + ", toDt=" + toDt + "]";
+				+ ", ddcYnNm=" + ddcYnNm + ", vatDdcClNm=" + vatDdcClNm + ", rmk=" + rmk + ", markPen=" + markPen
+				+ ", reqCd=" + reqCd + ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId + ", uptDt=" + uptDt
+				+ "]";
 	}
 }

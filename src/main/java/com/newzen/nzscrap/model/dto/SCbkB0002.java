@@ -25,6 +25,7 @@ public class SCbkB0002 {
 	private String trDetail;	// 거래내용상세
 	private String recvAcctNo;	// 상대방 계좌번호
 	private String rmk;			// 비고
+	private String markPen;		// 형광펜
 	private String reqCd;		// 요청코드
 	private String regId;		// 등록자ID
 	private String regDt;		// 등록일시
@@ -34,7 +35,7 @@ public class SCbkB0002 {
 	private String trRnd;		// _param에 포함
 	private String wlbn;		// _param에 포함
 	private String memo;		// _param에 포함
-
+	
 	public String getCompCd() {
 		return compCd;
 	}
@@ -125,6 +126,12 @@ public class SCbkB0002 {
 	public void setRmk(String rmk) {
 		this.rmk = rmk;
 	}
+	public String getMarkPen() {
+		return markPen;
+	}
+	public void setMarkPen(String markPen) {
+		this.markPen = markPen;
+	}
 	public String getReqCd() {
 		return reqCd;
 	}
@@ -178,8 +185,9 @@ public class SCbkB0002 {
 		return "SCbkB0002 [compCd=" + compCd + ", acctNo=" + acctNo + ", trDt=" + trDt + ", trTm=" + trTm + ", balance="
 				+ balance + ", bankCd=" + bankCd + ", inAmt=" + inAmt + ", outAmt=" + outAmt + ", curCd=" + curCd
 				+ ", trBr=" + trBr + ", trNm=" + trNm + ", trTp=" + trTp + ", trDetail=" + trDetail + ", recvAcctNo="
-				+ recvAcctNo + ", rmk=" + rmk + ", reqCd=" + reqCd + ", regId=" + regId + ", regDt=" + regDt
-				+ ", uptId=" + uptId + ", uptDt=" + uptDt + ", trRnd=" + trRnd + ", wlbn=" + wlbn + ", memo=" + memo
-				+ "]";
+				+ recvAcctNo + ", rmk=" + rmk + ", markPen=" + markPen + ", reqCd=" + reqCd + ", regId=" + regId
+				+ ", regDt=" + regDt + ", uptId=" + uptId + ", uptDt=" + uptDt + ", trRnd=" + trRnd + ", wlbn=" + wlbn
+				+ ", memo=" + memo + "]";
 	}
+
 }

@@ -31,15 +31,13 @@ public class SCardsalesB0021Dtl {
 	private String commVat;		// 부가세대리납부금액
 	private String payAmt;		// 지급금액	(P)
 	private String payDt;		// 지급예정일
+	private String markPen;		// 형광펜
 	private String rmk;			// 비고
 	private String reqCd;		// 요청코드
 	private String regId;		// 등록자ID
 	private String regDt;		// 등록일시
 	private String uptId;		// 수정자ID
 	private String uptDt;		// 수정일시
-	
-	private String fromDt;		// _거래일자 시작일 (삭제시 사용)
-	private String toDt;		// _거래일자 종료일 (삭제시 사용)
 
 	public String getCompCd() {
 		return compCd;
@@ -155,6 +153,12 @@ public class SCardsalesB0021Dtl {
 	public void setPayDt(String payDt) {
 		this.payDt = payDt;
 	}
+	public String getMarkPen() {
+		return markPen;
+	}
+	public void setMarkPen(String markPen) {
+		this.markPen = markPen;
+	}
 	public String getRmk() {
 		return rmk;
 	}
@@ -191,26 +195,14 @@ public class SCardsalesB0021Dtl {
 	public void setUptDt(String uptDt) {
 		this.uptDt = uptDt;
 	}
-	public String getFromDt() {
-		return fromDt;
-	}
-	public void setFromDt(String fromDt) {
-		this.fromDt = fromDt;
-	}
-	public String getToDt() {
-		return toDt;
-	}
-	public void setToDt(String toDt) {
-		this.toDt = toDt;
-	}
 	@Override
 	public String toString() {
 		return "SCardsalesB0021Dtl [compCd=" + compCd + ", trDt=" + trDt + ", buyDt=" + buyDt + ", apprNo=" + apprNo
 				+ ", cardCorp1=" + cardCorp1 + ", cardCorp2=" + cardCorp2 + ", merNo=" + merNo + ", cardKnd=" + cardKnd
 				+ ", cardNum=" + cardNum + ", cardDivCd=" + cardDivCd + ", cardDiv=" + cardDiv + ", buyAmt=" + buyAmt
 				+ ", commMem=" + commMem + ", commPoint=" + commPoint + ", commEtc=" + commEtc + ", commSum=" + commSum
-				+ ", commVat=" + commVat + ", payAmt=" + payAmt + ", payDt=" + payDt + ", rmk=" + rmk + ", reqCd="
-				+ reqCd + ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId + ", uptDt=" + uptDt
-				+ ", fromDt=" + fromDt + ", toDt=" + toDt + "]";
+				+ ", commVat=" + commVat + ", payAmt=" + payAmt + ", payDt=" + payDt + ", markPen=" + markPen + ", rmk="
+				+ rmk + ", reqCd=" + reqCd + ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId + ", uptDt="
+				+ uptDt + "]";
 	}
 }

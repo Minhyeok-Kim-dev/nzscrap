@@ -22,12 +22,13 @@ public class SHometaxZ4001 {
 	private String frPartNo;	// 발급수단
 	private String trGb;		// 거래구분
 	private String rmk;			// 비고
+	private String markPen;		// 형광펜
 	private String reqCd;		// 요청코드
 	private String regId;		// 등록자ID
 	private String regDt;		// 등록일시
 	private String uptId;		// 수정자ID
 	private String uptDt;		// 수정일시
-	
+
 	public String getCompCd() {
 		return compCd;
 	}
@@ -100,6 +101,12 @@ public class SHometaxZ4001 {
 	public void setRmk(String rmk) {
 		this.rmk = rmk;
 	}
+	public String getMarkPen() {
+		return markPen;
+	}
+	public void setMarkPen(String markPen) {
+		this.markPen = markPen;
+	}
 	public String getReqCd() {
 		return reqCd;
 	}
@@ -134,7 +141,8 @@ public class SHometaxZ4001 {
 	public String toString() {
 		return "SHometaxZ4001 [compCd=" + compCd + ", trDt=" + trDt + ", trTm=" + trTm + ", apprNo=" + apprNo
 				+ ", issueGb=" + issueGb + ", supAmt=" + supAmt + ", taxAmt=" + taxAmt + ", tip=" + tip + ", totAmt="
-				+ totAmt + ", frPartNo=" + frPartNo + ", trGb=" + trGb + ", rmk=" + rmk + ", reqCd=" + reqCd
-				+ ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId + ", uptDt=" + uptDt + "]";
+				+ totAmt + ", frPartNo=" + frPartNo + ", trGb=" + trGb + ", rmk=" + rmk + ", markPen=" + markPen
+				+ ", reqCd=" + reqCd + ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId + ", uptDt=" + uptDt
+				+ "]";
 	}
 }

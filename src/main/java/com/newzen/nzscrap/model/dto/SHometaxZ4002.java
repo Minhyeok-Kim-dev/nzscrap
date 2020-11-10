@@ -28,6 +28,7 @@ public class SHometaxZ4002 {
 	private String tfbNm;		// 업종명
 	private String bigo;		// 비고_내역
 	private String rmk;			// 비고
+	private String markPen;		// 형광펜
 	private String reqCd;		// 요청코드
 	private String regId;		// 등록자ID
 	private String regDt;		// 등록일시
@@ -180,6 +181,14 @@ public class SHometaxZ4002 {
 		this.rmk = rmk;
 	}
 
+	public String getMarkPen() {
+		return markPen;
+	}
+
+	public void setMarkPen(String markPen) {
+		this.markPen = markPen;
+	}
+
 	public String getReqCd() {
 		return reqCd;
 	}
@@ -234,7 +243,7 @@ public class SHometaxZ4002 {
 				+ ", useStore=" + useStore + ", storeNo=" + storeNo + ", supAmt=" + supAmt + ", taxAmt=" + taxAmt
 				+ ", tip=" + tip + ", totAmt=" + totAmt + ", frPartNo=" + frPartNo + ", trGb=" + trGb + ", ddcYn="
 				+ ddcYn + ", bmanClNm=" + bmanClNm + ", tfbCd=" + tfbCd + ", tfbNm=" + tfbNm + ", bigo=" + bigo
-				+ ", rmk=" + rmk + ", reqCd=" + reqCd + ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId
-				+ ", uptDt=" + uptDt + ", issueGb=" + issueGb + "]";
+				+ ", rmk=" + rmk + ", markPen=" + markPen + ", reqCd=" + reqCd + ", regId=" + regId + ", regDt=" + regDt
+				+ ", uptId=" + uptId + ", uptDt=" + uptDt + ", issueGb=" + issueGb + "]";
 	}
 }

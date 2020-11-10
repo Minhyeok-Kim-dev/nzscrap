@@ -36,6 +36,7 @@ public class SCardC0005 {
 	private String tip;					// 봉사료
 	private String storeBizNo2;			// 사업자번호2
 	private String rmk;					// 비고
+	private String markPen;				// 형광펜
 	private String reqCd;				// 요청코드
 	private String regId;				// 등록자ID
 	private String regDt;				// 등록일시
@@ -252,6 +253,14 @@ public class SCardC0005 {
 		this.rmk = rmk;
 	}
 
+	public String getMarkPen() {
+		return markPen;
+	}
+
+	public void setMarkPen(String markPen) {
+		this.markPen = markPen;
+	}
+
 	public String getReqCd() {
 		return reqCd;
 	}
@@ -308,8 +317,8 @@ public class SCardC0005 {
 				+ ", discAmt=" + discAmt + ", savePoint=" + savePoint + ", settleDt=" + settleDt + ", storeBizNo="
 				+ storeBizNo + ", storeCeo=" + storeCeo + ", storeAddr=" + storeAddr + ", storeTel=" + storeTel
 				+ ", storeType=" + storeType + ", exYn=" + exYn + ", exCurCd=" + exCurCd + ", useExAmt=" + useExAmt
-				+ ", addTax=" + addTax + ", tip=" + tip + ", storeBizNo2=" + storeBizNo2 + ", rmk=" + rmk + ", reqCd="
-				+ reqCd + ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId + ", uptDt=" + uptDt
-				+ ", givenCardNo=" + givenCardNo + "]";
+				+ ", addTax=" + addTax + ", tip=" + tip + ", storeBizNo2=" + storeBizNo2 + ", rmk=" + rmk + ", markPen="
+				+ markPen + ", reqCd=" + reqCd + ", regId=" + regId + ", regDt=" + regDt + ", uptId=" + uptId
+				+ ", uptDt=" + uptDt + ", givenCardNo=" + givenCardNo + "]";
 	}
 }

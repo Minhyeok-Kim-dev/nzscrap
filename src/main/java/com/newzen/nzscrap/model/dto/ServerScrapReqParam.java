@@ -12,6 +12,7 @@ public class ServerScrapReqParam {
 	private String orgCd;		// 기관코드
 	private String signCert;	// 인증서 der 
 	private String signPri;		// 인증서 key
+	private String certNm;		// 인증서명
 	private String signPw;		// 인증서 비밀번호
 	private String agentId;		// 세무대리인 관리번호
 	private String agentPw;		// 세무대리인 비밀번호
@@ -95,6 +96,12 @@ public class ServerScrapReqParam {
 	}
 	public void setSignPri(String signPri) {
 		this.signPri = signPri;
+	}
+	public String getCertNm() {
+		return certNm;
+	}
+	public void setCertNm(String certNm) {
+		this.certNm = certNm;
 	}
 	public String getSignPw() {
 		return signPw;
@@ -267,12 +274,13 @@ public class ServerScrapReqParam {
 	@Override
 	public String toString() {
 		return "ServerScrapReqParam [compCd=" + compCd + ", appCd=" + appCd + ", svcCd=" + svcCd + ", orgCd=" + orgCd
-				+ ", signCert=" + signCert + ", signPri=" + signPri + ", signPw=" + signPw + ", agentId=" + agentId
-				+ ", agentPw=" + agentPw + ", loginId=" + loginId + ", loginPw=" + loginPw + ", bizNo=" + bizNo
-				+ ", fromDt=" + fromDt + ", toDt=" + toDt + ", bankCd=" + bankCd + ", acctNo=" + acctNo + ", acctPw="
-				+ acctPw + ", cardCd=" + cardCd + ", cardNo=" + cardNo + ", keyCd=" + keyCd + ", reqCd=" + reqCd
-				+ ", scrapMode=" + scrapMode + ", logInType=" + logInType + ", itrfCd=" + itrfCd + ", fromY=" + fromY
-				+ ", toY=" + toY + ", fromQ=" + fromQ + ", toQ=" + toQ + ", stlYr=" + stlYr + ", wrtArr=" + wrtArr
-				+ ", supByr=" + supByr + ", taxGb=" + taxGb + ", wrtYr=" + wrtYr + ", wrtQt=" + wrtQt + "]";
+				+ ", signCert=" + signCert + ", signPri=" + signPri + ", certNm=" + certNm + ", signPw=" + signPw
+				+ ", agentId=" + agentId + ", agentPw=" + agentPw + ", loginId=" + loginId + ", loginPw=" + loginPw
+				+ ", bizNo=" + bizNo + ", fromDt=" + fromDt + ", toDt=" + toDt + ", bankCd=" + bankCd + ", acctNo="
+				+ acctNo + ", acctPw=" + acctPw + ", cardCd=" + cardCd + ", cardNo=" + cardNo + ", keyCd=" + keyCd
+				+ ", reqCd=" + reqCd + ", scrapMode=" + scrapMode + ", logInType=" + logInType + ", itrfCd=" + itrfCd
+				+ ", fromY=" + fromY + ", toY=" + toY + ", fromQ=" + fromQ + ", toQ=" + toQ + ", stlYr=" + stlYr
+				+ ", wrtArr=" + wrtArr + ", supByr=" + supByr + ", taxGb=" + taxGb + ", wrtYr=" + wrtYr + ", wrtQt="
+				+ wrtQt + "]";
 	}
 }

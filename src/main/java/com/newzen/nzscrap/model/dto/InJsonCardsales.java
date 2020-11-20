@@ -15,8 +15,8 @@ public class InJsonCardsales extends InJson {
 	public InJsonCardsales() {
 	}
 	
-	public InJsonCardsales(String appCd, String orgCd, String svcCd, String reqCd) {
-		super(appCd, orgCd, svcCd, reqCd);
+	public InJsonCardsales(String appCd, String orgCd, String svcCd, String reqCd, String proxy) {
+		super(appCd, orgCd, svcCd, reqCd, proxy);
 	}
 
 	// Getters & Setters

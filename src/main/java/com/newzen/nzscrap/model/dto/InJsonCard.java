@@ -21,8 +21,8 @@ public class InJsonCard extends InJson {
 	public InJsonCard() {
 	}
 	
-	public InJsonCard(String appCd, String orgCd, String svcCd, String reqCd) {
-		super(appCd, orgCd, svcCd, reqCd);
+	public InJsonCard(String appCd, String orgCd, String svcCd, String reqCd, String proxy) {
+		super(appCd, orgCd, svcCd, reqCd, proxy);
 	}
 
 	// Getters & Setters

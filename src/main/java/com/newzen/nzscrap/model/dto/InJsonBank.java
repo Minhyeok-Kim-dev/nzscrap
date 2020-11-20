@@ -21,8 +21,8 @@ public class InJsonBank extends InJson {
 	public InJsonBank() {
 	}
 
-	public InJsonBank(String appCd, String orgCd, String svcCd, String reqCd) {
-		super(appCd, orgCd, svcCd, reqCd);
+	public InJsonBank(String appCd, String orgCd, String svcCd, String reqCd, String proxy) {
+		super(appCd, orgCd, svcCd, reqCd, proxy);
 	}
 
 	public String getLoginMethod() {

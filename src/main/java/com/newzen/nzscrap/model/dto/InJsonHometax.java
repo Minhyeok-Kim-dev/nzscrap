@@ -40,13 +40,12 @@ public class InJsonHometax extends InJson {
 	private String wrtYr;		// 조회년도
 	private String wrtQt;		// 조회분기 (1:1기예정, 2:1기확정, 3:1기예정+확정, 4:2기예정, 5:2기확정, 6:2기예정+확정)
 	
-	
 	// Constructors
 	public InJsonHometax() {
 	}
 
-	public InJsonHometax(String appCd, String orgCd, String svcCd, String reqCd) {
-		super(appCd, orgCd, svcCd, reqCd);
+	public InJsonHometax(String appCd, String orgCd, String svcCd, String reqCd, String proxy) {
+		super(appCd, orgCd, svcCd, reqCd, proxy);
 	}
 
 	// Getters & Setters

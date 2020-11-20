@@ -2,10 +2,12 @@ package com.newzen.nzscrap.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.newzen.nzscrap.service.ScrapService;
 
@@ -14,6 +16,11 @@ import com.newzen.nzscrap.service.ScrapService;
 public class ScrapController {
 	@Autowired
 	ScrapService scrapService;
+	
+	@RequestMapping(value="proxy")
+	public String proxyForm() {
+		return "scrap/proxy";
+	}
 	
 	@RequestMapping(value="insertHistory", method=RequestMethod.POST)
 	@ResponseBody
@@ -52,5 +59,13 @@ public class ScrapController {
 	@ResponseBody
 	public String scrap() {
 		return scrapService.scrap();
+	}
+	
+	@RequestMapping(value = "proxyFileUpload", method = RequestMethod.POST)
+	@ResponseBody
+	public String proxyFileUpload(MultipartHttpServletRequest multi) {
+		int tmp = 0;
+		
+		return "";
 	}
 }

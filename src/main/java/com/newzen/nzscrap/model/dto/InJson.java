@@ -10,46 +10,65 @@ public class InJson {
 	private String orgCd;	// 기관코드
 	private String svcCd;	// 서비스 코드
 	private String reqCd;	// 요청코드
+	private String proxy;	// proxy 주소 (ip:port)
 
 	// Constructors
 	public InJson() {
 	}
 	
-	public InJson(String appCd, String orgCd, String svcCd, String reqCd) {
+	public InJson(String appCd, String orgCd, String svcCd, String reqCd, String proxy) {
 		super();
 		this.appCd = appCd;
 		this.orgCd = orgCd;
 		this.svcCd = svcCd;
 		this.reqCd = reqCd;
+		this.proxy = proxy;
 	}
-	
+
 	// Getters & Setters
 	public String getAppCd() {
 		return appCd;
 	}
+
 	public void setAppCd(String appCd) {
 		this.appCd = appCd;
 	}
+
 	public String getOrgCd() {
 		return orgCd;
 	}
+
 	public void setOrgCd(String orgCd) {
 		this.orgCd = orgCd;
 	}
+
 	public String getSvcCd() {
 		return svcCd;
 	}
+
 	public void setSvcCd(String svcCd) {
 		this.svcCd = svcCd;
 	}
+
 	public String getReqCd() {
 		return reqCd;
 	}
+
 	public void setReqCd(String reqCd) {
 		this.reqCd = reqCd;
 	}
+
+	public String getProxy() {
+		return proxy;
+	}
+
+	public void setProxy(String proxy) {
+		this.proxy = proxy;
+	}
+
 	@Override
 	public String toString() {
-		return "InJson [appCd=" + appCd + ", orgCd=" + orgCd + ", svcCd=" + svcCd + ", reqCd=" + reqCd + "]";
+		return "InJson [appCd=" + appCd + ", orgCd=" + orgCd + ", svcCd=" + svcCd + ", reqCd=" + reqCd + ", proxy="
+				+ proxy + "]";
 	}
 }

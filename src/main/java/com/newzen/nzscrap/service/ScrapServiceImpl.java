@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -62,6 +63,7 @@ import com.newzen.nzscrap.model.dto.SHometaxZ4070;
 import com.newzen.nzscrap.model.dto.SHometaxZ5002;
 import com.newzen.nzscrap.model.dto.SSbkB0002;
 import com.newzen.nzscrap.model.dto.ServerScrapReqParam;
+import com.newzen.nzscrap.model.form.ScrapCertForm;
 import com.newzen.nzscrap.util.AES256Util;
 import com.newzen.nzscrap.util.SftpUtil;
 
@@ -71,6 +73,9 @@ import com.newzen.nzscrap.util.SftpUtil;
  */
 @Service
 public class ScrapServiceImpl implements ScrapService {
+	@Autowired 
+	ProxyService proxyService;
+	
 	//private static final String BIZBOOKS_URL = "https://bizbooks.newzensolution.co.kr/bizbooks";
 	private static final String BIZBOOKS_URL = "http://192.168.11.49:8090/bizbooks/";
 	
@@ -87,7 +92,10 @@ public class ScrapServiceImpl implements ScrapService {
 	@Override
 	public String scrap() {
 		try {
-			HashMap<String, String> scrapListMap = getBizbooksScrapSchedule("20200101", "20201109");
+			// 프록시 내용 초기화
+			proxyService.init();
+			
+			HashMap<String, String> scrapListMap = getBizbooksScrapSchedule("20201101", "20201119");
 			
 			long sTime = System.currentTimeMillis();
 			ArrayList<String> timeList = new ArrayList<>(); 
@@ -95,35 +103,16 @@ public class ScrapServiceImpl implements ScrapService {
 			for(Map.Entry<String, String> entry : scrapListMap.entrySet()) {
 				String compCd = entry.getKey();
 				String jsonReqParam = entry.getValue();
-				/*
-				if( 
-					compCd.equals("D00095") || compCd.equals("D00174") || compCd.equals("D00175") || compCd.equals("D00176") 
-					|| compCd.equals("D00177") || compCd.equals("D00178") || compCd.equals("D00179") || compCd.equals("D00180") 
-					|| compCd.equals("D00181") || compCd.equals("D00182") || compCd.equals("D00183") || compCd.equals("D00184") 
-					|| compCd.equals("D00185") || compCd.equals("D00186") || compCd.equals("D00187") || compCd.equals("D00188") 
-					|| compCd.equals("D00189") || compCd.equals("D00190") || compCd.equals("D00191") || compCd.equals("D00192") 
-					|| compCd.equals("D00193") || compCd.equals("D00194") || compCd.equals("D00195") || compCd.equals("D00196") 
-					|| compCd.equals("D00197") || compCd.equals("D00198") || compCd.equals("D00199") || compCd.equals("D00200") 
-					|| compCd.equals("D00201") || compCd.equals("D00202") || compCd.equals("D00203") || compCd.equals("D00204") 
-					|| compCd.equals("D00205") || compCd.equals("D00206") || compCd.equals("D00207")
-					
-					) {
-				*/
 
-				//if(compCd.equals("D000000266" )) {
-				//if(compCd.equals("D00095")) {
-				//if(compCd.equals("D000000129")) {
-				//if(compCd.equals("D00032")) {
-				//if(compCd.equals("D000000266") || compCd.equals("D000000267") || compCd.equals("D000000268") || 
-				//		compCd.equals("D000000269") || compCd.equals("D000000270") || compCd.equals("D000000271")) {
-				if(compCd.equals("D00123")) {
+				if(compCd.equals("D00117")) {
 					System.out.println(compCd);
 					
 					long ssTime = System.currentTimeMillis();
-					scrapByCompCd(compCd, jsonReqParam);
+					
+					scrapByCompCd_test(compCd, jsonReqParam);
+					//scrapByCompCd(compCd, jsonReqParam);
 					
 					long eeTime = System.currentTimeMillis();
-					
 					timeList.add("# comp time : " + compCd + " // " + (eeTime - ssTime));
 				}
 			}
@@ -919,25 +908,49 @@ public class ScrapServiceImpl implements ScrapService {
 		
 		ArrayList<String> inJsonList = new ArrayList<>();
 		
+		// 201110_kmh 중복 인증서 제거 
+		// - 인증서 명이 같은 경우 certMap에 포함하고, 스크래핑시 해당 인증서로 처리합니다.
+		HashMap<String, ServerScrapReqParam> certMap = new HashMap<>();
+		
 		for(ServerScrapReqParam reqParam : reqParamList) {
-			//System.out.println(reqParam);
+			ServerScrapReqParam reqParamTmp = certMap.get(reqParam.getCertNm());
 			
+			if(reqParamTmp == null && reqParam.getCertNm() != null) {
+				SftpUtil sftpUtil = new SftpUtil();
+				
+				String signCert = sftpUtil.getFileData(reqParam.getSignCert(), "signCert.der");
+				String signPri = sftpUtil.getFileData(reqParam.getSignPri(), "signPri.key");
+				
+				reqParam.setSignCert(signCert);
+				reqParam.setSignPri(signPri);
+				
+				certMap.put(reqParam.getCertNm(), reqParam);
+			}
+		}
+		
+		
+		for(ServerScrapReqParam reqParam : reqParamList) {
 			// 공통 요청정보
 			String appCd = reqParam.getAppCd();
 			String orgCd = reqParam.getOrgCd();
 			String svcCd = reqParam.getSvcCd();
 			
-			SftpUtil sftpUtil = new SftpUtil();
-			// 인증서 정보
-			String signCert = sftpUtil.getFileData(reqParam.getSignCert(), "signCert.der");
-			String signPri = sftpUtil.getFileData(reqParam.getSignPri(), "signPri.key");
+			String signCert = null;
+			String signPri = null;
+			String proxy = proxyService.getNextAddr();	// 각 서비스 호출시마다 다른 proxy 주소로 전송
+			
+			ServerScrapReqParam reqParamTmp = certMap.get(reqParam.getCertNm());
+			if(reqParamTmp != null) {
+				signCert = reqParamTmp.getSignCert();
+				signPri = reqParamTmp.getSignPri();
+			}
 			
 			String signPw = reqParam.getSignPw();
 			String reqCd = reqParam.getReqCd();
 			
 			switch(orgCd) {
 			case "hometax":
-				InJsonHometax inJsonHometax = new InJsonHometax(appCd, orgCd, svcCd, reqCd);
+				InJsonHometax inJsonHometax = new InJsonHometax(appCd, orgCd, svcCd, reqCd, proxy);
 				inJsonHometax.setSignCert(signCert);
 				inJsonHometax.setSignPri(signPri);
 				inJsonHometax.setSignPw(signPw);
@@ -985,6 +998,13 @@ public class ScrapServiceImpl implements ScrapService {
 							// 인증서 제외 기타 인증내용 제거
 							inJsonHometax.setUserId("");
 							inJsonHometax.setUserPw("");
+							
+							// 인증서 없는 경우 인증내용 공란으로 설정
+							if(inJsonHometax.getSignCert() == null || inJsonHometax.getSignCert().isEmpty()) {
+								inJsonHometax.setSignCert("");
+								inJsonHometax.setSignPri("");
+								inJsonHometax.setSignPw("");
+							}
 						}
 						break;
 					}
@@ -1030,7 +1050,7 @@ public class ScrapServiceImpl implements ScrapService {
 			case "bank":
 			case "cbk": 
 			case "sbk": {
-				InJsonBank inJsonBank = new InJsonBank(appCd, orgCd, svcCd, reqCd);
+				InJsonBank inJsonBank = new InJsonBank(appCd, orgCd, svcCd, reqCd, proxy);
 				
 				switch(reqParam.getLogInType()) {
 				case 1:	// ID 로그인
@@ -1076,7 +1096,7 @@ public class ScrapServiceImpl implements ScrapService {
 			}
 			case "card":
 			case "ccd": {
-				InJsonCard inJsonCard = new InJsonCard(appCd, orgCd, svcCd, reqCd);
+				InJsonCard inJsonCard = new InJsonCard(appCd, orgCd, svcCd, reqCd, proxy);
 				
 				switch(reqParam.getLogInType()) {
 				case 1:	// ID 로그인
@@ -1111,7 +1131,7 @@ public class ScrapServiceImpl implements ScrapService {
 				break;
 			}
 			case "cardsales":
-				InJsonCardsales inJsonCardsales = new InJsonCardsales(appCd, orgCd, svcCd, reqCd);
+				InJsonCardsales inJsonCardsales = new InJsonCardsales(appCd, orgCd, svcCd, reqCd, proxy);
 				inJsonCardsales.setUserId(reqParam.getLoginId());
 				inJsonCardsales.setUserPw(reqParam.getLoginPw());
 				inJsonCardsales.setFromDate(reqParam.getFromDt());
@@ -1433,92 +1453,94 @@ public class ScrapServiceImpl implements ScrapService {
 							ArrayList<HashMap<String, Object>> outZ0006List = 
 									objectMapper.convertValue(outJson.get("outZ0006"), new TypeReference<ArrayList<HashMap<String, Object>>>() {});
 							
-							for(HashMap<String, Object> outZ0006 : outZ0006List) {
-								HashMap<String, Object> cnd = (HashMap<String, Object>) outZ0006.get("cnd");
-										
-								// 공통 fields
-								String wrtYr = cnd.get("wrtYr").toString();
-								String wrtQt = cnd.get("wrtQt").toString();
-								String wrtDtFrom = cnd.get("wrtDtFrom").toString();
-								String wrtDtTo = cnd.get("wrtDtTo").toString();
-								String supByr = cnd.get("supByr").toString();
-								String taxGb = cnd.get("taxGb").toString();
-								
-								// TODO: setter -> convertValue to POJO (현재 null bind됨..)
-								//SHometaxZ0006 sHometaxZ0006 = objectMapper.convertValue(outZ0006, SHometaxZ0006.class);
-								
-								// 부가세신고용 합계표 조회
-								SHometaxZ0006 sHometaxZ0006 = new SHometaxZ0006();
-								sHometaxZ0006.setCompCd(compCd);
-								sHometaxZ0006.setSupByr(supByr);
-								sHometaxZ0006.setTaxGb(taxGb);
-								sHometaxZ0006.setWrtYr(wrtYr);
-								sHometaxZ0006.setWrtQt(wrtQt);
-								sHometaxZ0006.setWrtDtFrom(wrtDtFrom);
-								sHometaxZ0006.setWrtDtTo(wrtDtTo);
-								sHometaxZ0006.setWithIn_bsnoIsnClplcCnt(outZ0006.get("WithIn_bsnoIsnClplcCnt").toString());
-								sHometaxZ0006.setWithIn_bsnoIsnScnt(outZ0006.get("WithIn_bsnoIsnScnt").toString());
-								sHometaxZ0006.setWithIn_bsnoIsnSplCft(outZ0006.get("WithIn_bsnoIsnSplCft").toString());
-								sHometaxZ0006.setWithIn_bsnoIsnTxamt(outZ0006.get("WithIn_bsnoIsnTxamt").toString());
-								sHometaxZ0006.setWithIn_resnoIsnClplcCnt(outZ0006.get("WithIn_resnoIsnClplcCnt").toString());
-								sHometaxZ0006.setWithIn_resnoIsnScnt(outZ0006.get("WithIn_resnoIsnScnt").toString());
-								sHometaxZ0006.setWithIn_resnoIsnSplCft(outZ0006.get("WithIn_resnoIsnSplCft").toString());
-								sHometaxZ0006.setWithIn_resnoIsnTxamt(outZ0006.get("WithIn_resnoIsnTxamt").toString());
-								sHometaxZ0006.setWithIn_totCnt(outZ0006.get("WithIn_totCnt").toString());
-								sHometaxZ0006.setWithIn_totPurchplcCnt(outZ0006.get("WithIn_totPurchplcCnt").toString());
-								sHometaxZ0006.setWithIn_totSellplcCnt(outZ0006.get("WithIn_totSellplcCnt").toString());
-								sHometaxZ0006.setWithIn_totSplCft(outZ0006.get("WithIn_totSplCft").toString());
-								sHometaxZ0006.setWithIn_totTxamt(outZ0006.get("WithIn_totTxamt").toString());
-								sHometaxZ0006.setEt_bsnoIsnClplcCnt(outZ0006.get("Et_bsnoIsnClplcCnt").toString());
-								sHometaxZ0006.setEt_bsnoIsnScnt(outZ0006.get("Et_bsnoIsnScnt").toString());
-								sHometaxZ0006.setEt_bsnoIsnSplCft(outZ0006.get("Et_bsnoIsnSplCft").toString());
-								sHometaxZ0006.setEt_bsnoIsnTxamt(outZ0006.get("Et_bsnoIsnTxamt").toString());
-								sHometaxZ0006.setEt_resnoIsnClplcCnt(outZ0006.get("Et_resnoIsnClplcCnt").toString());
-								sHometaxZ0006.setEt_resnoIsnScnt(outZ0006.get("Et_resnoIsnScnt").toString());
-								sHometaxZ0006.setEt_resnoIsnSplCft(outZ0006.get("Et_resnoIsnSplCft").toString());
-								sHometaxZ0006.setEt_resnoIsnTxamt(outZ0006.get("Et_resnoIsnTxamt").toString());
-								sHometaxZ0006.setEt_totCnt(outZ0006.get("Et_totCnt").toString());
-								sHometaxZ0006.setEt_totPurchplcCnt(outZ0006.get("Et_totPurchplcCnt").toString());
-								sHometaxZ0006.setEt_totSellplcCnt(outZ0006.get("Et_totSellplcCnt").toString());
-								sHometaxZ0006.setEt_totSplCft(outZ0006.get("Et_totSplCft").toString());
-								sHometaxZ0006.setEt_totTxamt(outZ0006.get("Et_totTxamt").toString());
-								sHometaxZ0006.setReqCd(reqCd);
-								sHometaxZ0006List.add(sHometaxZ0006);
-								
-								// 부가세신고용 합계표 조회 명세
-								// - 11일 이전, 11일 이후 2가지 list로 값 넘어옴
-								ArrayList<SHometaxZ0006Dtl> sHometaxZ0006DtlEtList = 
-										objectMapper.convertValue(outZ0006.get("listEt"), new TypeReference<ArrayList<SHometaxZ0006Dtl>>() {});
-								ArrayList<SHometaxZ0006Dtl> sHometaxZ0006DtlWithInList = 
-										objectMapper.convertValue(outZ0006.get("listWithIn"), new TypeReference<ArrayList<SHometaxZ0006Dtl>>() {});
-								
-								if(sHometaxZ0006DtlEtList.size() > 0) {
-									for(SHometaxZ0006Dtl sHometaxZ0006Dtl : sHometaxZ0006DtlEtList) {
-										sHometaxZ0006Dtl.setCompCd(compCd);
-										sHometaxZ0006Dtl.setSupByr(supByr);
-										sHometaxZ0006Dtl.setTaxGb(taxGb);
-										sHometaxZ0006Dtl.setWrtYr(wrtYr);
-										sHometaxZ0006Dtl.setWrtQt(wrtQt);
-										sHometaxZ0006Dtl.setWrtDtFrom(wrtDtFrom);
-										sHometaxZ0006Dtl.setWrtDtTo(wrtDtTo);
-										sHometaxZ0006Dtl.setReqCd(reqCd);
-										sHometaxZ0006DtlList.add(sHometaxZ0006Dtl);
+							if(outZ0006List != null) {
+								for(HashMap<String, Object> outZ0006 : outZ0006List) {
+									HashMap<String, Object> cnd = (HashMap<String, Object>) outZ0006.get("cnd");
+											
+									// 공통 fields
+									String wrtYr = cnd.get("wrtYr").toString();
+									String wrtQt = cnd.get("wrtQt").toString();
+									String wrtDtFrom = cnd.get("wrtDtFrom").toString();
+									String wrtDtTo = cnd.get("wrtDtTo").toString();
+									String supByr = cnd.get("supByr").toString();
+									String taxGb = cnd.get("taxGb").toString();
+									
+									// TODO: setter -> convertValue to POJO (현재 null bind됨..)
+									//SHometaxZ0006 sHometaxZ0006 = objectMapper.convertValue(outZ0006, SHometaxZ0006.class);
+									
+									// 부가세신고용 합계표 조회
+									SHometaxZ0006 sHometaxZ0006 = new SHometaxZ0006();
+									sHometaxZ0006.setCompCd(compCd);
+									sHometaxZ0006.setSupByr(supByr);
+									sHometaxZ0006.setTaxGb(taxGb);
+									sHometaxZ0006.setWrtYr(wrtYr);
+									sHometaxZ0006.setWrtQt(wrtQt);
+									sHometaxZ0006.setWrtDtFrom(wrtDtFrom);
+									sHometaxZ0006.setWrtDtTo(wrtDtTo);
+									sHometaxZ0006.setWithIn_bsnoIsnClplcCnt(outZ0006.get("WithIn_bsnoIsnClplcCnt").toString());
+									sHometaxZ0006.setWithIn_bsnoIsnScnt(outZ0006.get("WithIn_bsnoIsnScnt").toString());
+									sHometaxZ0006.setWithIn_bsnoIsnSplCft(outZ0006.get("WithIn_bsnoIsnSplCft").toString());
+									sHometaxZ0006.setWithIn_bsnoIsnTxamt(outZ0006.get("WithIn_bsnoIsnTxamt").toString());
+									sHometaxZ0006.setWithIn_resnoIsnClplcCnt(outZ0006.get("WithIn_resnoIsnClplcCnt").toString());
+									sHometaxZ0006.setWithIn_resnoIsnScnt(outZ0006.get("WithIn_resnoIsnScnt").toString());
+									sHometaxZ0006.setWithIn_resnoIsnSplCft(outZ0006.get("WithIn_resnoIsnSplCft").toString());
+									sHometaxZ0006.setWithIn_resnoIsnTxamt(outZ0006.get("WithIn_resnoIsnTxamt").toString());
+									sHometaxZ0006.setWithIn_totCnt(outZ0006.get("WithIn_totCnt").toString());
+									sHometaxZ0006.setWithIn_totPurchplcCnt(outZ0006.get("WithIn_totPurchplcCnt").toString());
+									sHometaxZ0006.setWithIn_totSellplcCnt(outZ0006.get("WithIn_totSellplcCnt").toString());
+									sHometaxZ0006.setWithIn_totSplCft(outZ0006.get("WithIn_totSplCft").toString());
+									sHometaxZ0006.setWithIn_totTxamt(outZ0006.get("WithIn_totTxamt").toString());
+									sHometaxZ0006.setEt_bsnoIsnClplcCnt(outZ0006.get("Et_bsnoIsnClplcCnt").toString());
+									sHometaxZ0006.setEt_bsnoIsnScnt(outZ0006.get("Et_bsnoIsnScnt").toString());
+									sHometaxZ0006.setEt_bsnoIsnSplCft(outZ0006.get("Et_bsnoIsnSplCft").toString());
+									sHometaxZ0006.setEt_bsnoIsnTxamt(outZ0006.get("Et_bsnoIsnTxamt").toString());
+									sHometaxZ0006.setEt_resnoIsnClplcCnt(outZ0006.get("Et_resnoIsnClplcCnt").toString());
+									sHometaxZ0006.setEt_resnoIsnScnt(outZ0006.get("Et_resnoIsnScnt").toString());
+									sHometaxZ0006.setEt_resnoIsnSplCft(outZ0006.get("Et_resnoIsnSplCft").toString());
+									sHometaxZ0006.setEt_resnoIsnTxamt(outZ0006.get("Et_resnoIsnTxamt").toString());
+									sHometaxZ0006.setEt_totCnt(outZ0006.get("Et_totCnt").toString());
+									sHometaxZ0006.setEt_totPurchplcCnt(outZ0006.get("Et_totPurchplcCnt").toString());
+									sHometaxZ0006.setEt_totSellplcCnt(outZ0006.get("Et_totSellplcCnt").toString());
+									sHometaxZ0006.setEt_totSplCft(outZ0006.get("Et_totSplCft").toString());
+									sHometaxZ0006.setEt_totTxamt(outZ0006.get("Et_totTxamt").toString());
+									sHometaxZ0006.setReqCd(reqCd);
+									sHometaxZ0006List.add(sHometaxZ0006);
+									
+									// 부가세신고용 합계표 조회 명세
+									// - 11일 이전, 11일 이후 2가지 list로 값 넘어옴
+									ArrayList<SHometaxZ0006Dtl> sHometaxZ0006DtlEtList = 
+											objectMapper.convertValue(outZ0006.get("listEt"), new TypeReference<ArrayList<SHometaxZ0006Dtl>>() {});
+									ArrayList<SHometaxZ0006Dtl> sHometaxZ0006DtlWithInList = 
+											objectMapper.convertValue(outZ0006.get("listWithIn"), new TypeReference<ArrayList<SHometaxZ0006Dtl>>() {});
+									
+									if(sHometaxZ0006DtlEtList.size() > 0) {
+										for(SHometaxZ0006Dtl sHometaxZ0006Dtl : sHometaxZ0006DtlEtList) {
+											sHometaxZ0006Dtl.setCompCd(compCd);
+											sHometaxZ0006Dtl.setSupByr(supByr);
+											sHometaxZ0006Dtl.setTaxGb(taxGb);
+											sHometaxZ0006Dtl.setWrtYr(wrtYr);
+											sHometaxZ0006Dtl.setWrtQt(wrtQt);
+											sHometaxZ0006Dtl.setWrtDtFrom(wrtDtFrom);
+											sHometaxZ0006Dtl.setWrtDtTo(wrtDtTo);
+											sHometaxZ0006Dtl.setReqCd(reqCd);
+											sHometaxZ0006DtlList.add(sHometaxZ0006Dtl);
+										}
 									}
-								}
-								
-								if(sHometaxZ0006DtlWithInList.size() > 0) {
-									for(SHometaxZ0006Dtl sHometaxZ0006Dtl : sHometaxZ0006DtlWithInList) {
-										sHometaxZ0006Dtl.setCompCd(compCd);
-										sHometaxZ0006Dtl.setSupByr(supByr);
-										sHometaxZ0006Dtl.setTaxGb(taxGb);
-										sHometaxZ0006Dtl.setWrtYr(wrtYr);
-										sHometaxZ0006Dtl.setWrtQt(wrtQt);
-										sHometaxZ0006Dtl.setWrtDtFrom(wrtDtFrom);
-										sHometaxZ0006Dtl.setWrtDtTo(wrtDtTo);
-										sHometaxZ0006Dtl.setReqCd(reqCd);
-										sHometaxZ0006DtlList.add(sHometaxZ0006Dtl);
+									
+									if(sHometaxZ0006DtlWithInList.size() > 0) {
+										for(SHometaxZ0006Dtl sHometaxZ0006Dtl : sHometaxZ0006DtlWithInList) {
+											sHometaxZ0006Dtl.setCompCd(compCd);
+											sHometaxZ0006Dtl.setSupByr(supByr);
+											sHometaxZ0006Dtl.setTaxGb(taxGb);
+											sHometaxZ0006Dtl.setWrtYr(wrtYr);
+											sHometaxZ0006Dtl.setWrtQt(wrtQt);
+											sHometaxZ0006Dtl.setWrtDtFrom(wrtDtFrom);
+											sHometaxZ0006Dtl.setWrtDtTo(wrtDtTo);
+											sHometaxZ0006Dtl.setReqCd(reqCd);
+											sHometaxZ0006DtlList.add(sHometaxZ0006Dtl);
+										}
 									}
-								}
+								}	
 							}
 							break;
 						}
@@ -1843,6 +1865,7 @@ public class ScrapServiceImpl implements ScrapService {
 	
 	
 	//################ SSL Security Exception 방지 코드
+	// TODO: util로 분리
 	private static void disableSslVerification() {
 		// Create a trust manager that does not validate certificate chains
 		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
@@ -1879,22 +1902,6 @@ public class ScrapServiceImpl implements ScrapService {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	 * ######################################################################## 
-	 * 이하 작업
-	 */
 	
 	/**
 	 * getBizbooksScrapSchedule
@@ -1948,10 +1955,12 @@ public class ScrapServiceImpl implements ScrapService {
 			AES256Util aes256CompRegsNo = new AES256Util(AES256Util.KEY_COMP_REGSNO);
 
 			String dateTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-
+			
+			
 			// 데이터 복호화
 			for(int i = 0; i < reqParamList.size(); i++) {
 				ServerScrapReqParam reqParam = reqParamList.get(i);
+				
 				// 요청번호 부여 (yyyyMMddHHmmss)
 				String reqCd = String.format("%s%010d", dateTime, i);
 				reqParam.setReqCd(reqCd);
@@ -1984,18 +1993,15 @@ public class ScrapServiceImpl implements ScrapService {
 				
 				// - 주민등록번호
 				// > 홈택스_세금신고접수증조회_종합소득세
-				if(reqParam.getOrgCd().equals("hometax") 
-						&& reqParam.getSvcCd().equals("Z5002") 
-						&& reqParam.getItrfCd().equals("10")) {
+				if((reqParam.getOrgCd() != null && reqParam.getOrgCd().equals("hometax")) 
+						&& (reqParam.getSvcCd() != null && reqParam.getSvcCd().equals("Z5002")) 
+						&& (reqParam.getItrfCd() != null && reqParam.getItrfCd().equals("10"))) {
 					if(reqParam.getBizNo() != null) {
-						try {
-							reqParam.setBizNo(aes256CompRegsNo.decrypt(reqParam.getBizNo()));
-						} catch(Exception ex2) {
-							System.out.println("here~");
-						}
+						reqParam.setBizNo(aes256CompRegsNo.decrypt(reqParam.getBizNo()));
 					}
 				}
 			}
+			
 
 			// 회사코드별 분류
 			String cmpCompCd = "";
@@ -2131,4 +2137,279 @@ public class ScrapServiceImpl implements ScrapService {
 		String today = sdf.format(new Date());
 		sendDataToBizbooks(compCd, today);
 	}
+	
+
+
+	/*
+	 * 
+	 * 201119_kmh
+	 * 
+	 * TODO: 이하 건별 스크래핑 처리 후 리팩토링
+	 * 
+	 * 
+	 */
+	private void scrapByCompCd_test(String compCd, String jsonReqParamList) {
+		//# 중복제거 한 인증정보 DTO 생성
+		try {
+			getDistinctScrapCertFormList(jsonReqParamList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private ArrayList<ScrapCertForm> getDistinctScrapCertFormList(String jsonReqParamList) throws IOException {
+		ArrayList<ScrapCertForm> scrapCertFormList = new ArrayList<>();
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		SftpUtil sftpUtil = new SftpUtil();
+		
+		ArrayList<ServerScrapReqParam> reqParamList = 
+				objectMapper.reader()
+				.forType(new TypeReference<ArrayList<ServerScrapReqParam>>() {})
+				.readValue(jsonReqParamList);
+		
+		// 중복 인증정보 제거 
+		// - 홈택스 (certMap -> certList 순으로 적재)
+		//  > hometaxZ300X - 세무대리 인증서, 본인 인증서
+		//  > hometaxZ400X - 본인 인증서, 본인 id
+		//  > hometaxZ40X0 - 본인 인증서, 본인 id
+		//  > hometaxZXXXX - 세무대리 인증서
+		
+		// - 여신  (certMap -> certList 순으로 적재)
+		//  > cardsalesBXXXX - 본인 id
+		
+		// - 카드 (certList 적재)
+		//  > creditCcd		- LoginType 비교 (1: 본인 id, 2: 본인 인증서) 
+		//  > creditCard 	- LoginType 비교 (1: 본인 id, 2: 본인 인증서)
+		
+		// - 통장 (certList 적재)
+		//  > accountCbk	- LoginType 비교 (1: 본인 id, 2: 본인 인증서)
+		//  > accountBank  	- LoginType 비교 (1: 본인 id, 2: 본인 인증서)
+		//  > accountSbk   	- LoginType 비교 (3: 빠른조회)
+		ArrayList<ServerScrapReqParam> certList = new ArrayList<>();
+		HashMap<String, ServerScrapReqParam> certMap = new HashMap<>();
+		HashMap<String, ServerScrapReqParam> creditMap = new HashMap<>();
+		
+		ArrayList<ServerScrapReqParam> hometaxReqParam = new ArrayList<>();
+		ArrayList<ServerScrapReqParam> cardsalesReqParam = new ArrayList<>();
+		ArrayList<ServerScrapReqParam> creditReqParam = new ArrayList<>();
+		ArrayList<ServerScrapReqParam> accountReqParam = new ArrayList<>();
+		String signCert = "";
+		String signPri = "";
+		String loginId = "";
+		String loginPw = "";
+		
+		for(ServerScrapReqParam reqParam : reqParamList) {
+			switch (reqParam.getOrgCd()) {
+			case "hometax":
+				hometaxReqParam.add(reqParam);
+				break;
+			case "cardsales":
+				cardsalesReqParam.add(reqParam);
+				break;
+			case "ccd":
+			case "card":
+				creditReqParam.add(reqParam);
+				break;
+			case "cbk":
+			case "bank":
+			case "sbk":
+				accountReqParam.add(reqParam);
+				break;
+			}
+		}
+		
+		// - 홈택스
+		//  > Z300X - 세무대리 인증서, 본인 인증서
+		//  > Z400X - 본인 인증서, 본인 id
+		//  > Z40X0 - 본인 인증서, 본인 id
+		//  > ZXXXX - 세무대리 인증서
+		ServerScrapReqParam reqParamTmp;
+		
+		String svcCd = "";
+		int loginType = 0;	// 1:id, 2:인증서
+		
+		for(ServerScrapReqParam reqParam : hometaxReqParam) {
+			signCert = reqParam.getSignCert();
+			signPri = reqParam.getSignPri();
+			loginId = reqParam.getLoginId();
+			loginPw = reqParam.getLoginPw();
+			
+			switch(reqParam.getSvcCd()) {
+			case "Z3001":
+			case "Z3002":
+			case "Z3003":
+			case "Z3004":
+				svcCd = "hometaxZ300X";
+				loginType = 2;
+				break;
+			case "Z4001":
+			case "Z4002":	
+				svcCd = "hometaxZ400X";
+				// 본인 id 있는 경우
+				if(loginId != null && loginId.length() > 0 && loginPw != null && loginPw.length() > 0) {
+					loginType = 1;
+				}
+				// 본인 인증서 있는 경우
+				if(signCert != null && signCert.length() > 0 && signPri != null && signPri.length() > 0) {
+					loginType = 2;
+				} 
+				break;
+			case "Z4010":
+			case "Z4020":
+				svcCd = "hometaxZ40X0";
+				// 본인 id 있는 경우
+				if(loginId != null && loginId.length() > 0 && loginPw != null && loginPw.length() > 0) {
+					loginType = 1;
+				}
+				// 본인 인증서 있는 경우
+				if(signCert != null && signCert.length() > 0 && signPri != null && signPri.length() > 0) {
+					loginType = 2;
+				} 
+				break;
+			default:
+				svcCd = "hometaxZXXXX";
+				loginType = 2;
+				break;
+			}
+			
+			reqParam.setSvcCd(svcCd); // 현재 서비스 코드 추가 -> 각 서비스별 1회만 스크래핑에 사용 (홈택스, 여신 only)
+			
+			
+			reqParamTmp = certMap.get(svcCd);
+			
+			switch(loginType) {
+			case 1:	// id
+				if(loginId != null && loginId.length() > 0 && loginPw != null && loginPw.length() > 0) { 
+					certMap.put(svcCd, reqParam);
+				}
+				break;
+			case 2: // 인증서 
+				if(reqParamTmp == null && signCert != null && signCert.length() > 0 && signPri != null && signPri.length() > 0) {
+					reqParam.setSignCert(sftpUtil.getFileData(signCert, "signCert.der"));
+					reqParam.setSignPri(sftpUtil.getFileData(signPri, "signPri.key"));
+					
+					certMap.put(svcCd, reqParam);
+				}
+			}
+		}
+		
+		// - 여신 
+		//  > cardsalesBXXXX - 본인 id
+		for(ServerScrapReqParam reqParam : cardsalesReqParam) {
+			loginId = reqParam.getLoginId();
+			loginPw = reqParam.getLoginPw();
+			svcCd = "cardsalesBXXXX";
+			
+			reqParam.setSvcCd(svcCd); // 서비스 코드 추가 -> 각 서비스별 1회만 스크래핑에 사용 (홈택스, 여신 only)
+			
+			reqParamTmp = certMap.get(svcCd);
+			
+			if(reqParamTmp == null && loginId != null && loginId.length() > 0 && loginPw != null && loginPw.length() > 0) {
+				certMap.put(svcCd, reqParam);
+			}
+		}
+		
+		
+		// - 카드 
+		//  개인, 법인만 구분하여 스크래핑 리스트에 포함합니다.
+		//  동일 인증서 file 사용하는 경우 -> 한번만 복호화 처리 -> overwrite 처리순으로 진행됩니다.
+		//  > creditCcd		- LoginType 비교 (1: 본인 id, 2: 본인 인증서) 
+		//  > creditCard 	- LoginType 비교 (1: 본인 id, 2: 본인 인증서)
+		for(ServerScrapReqParam reqParam : creditReqParam) {
+			signCert = reqParam.getSignCert();
+			signPri = reqParam.getSignPri();
+			loginId = reqParam.getLoginId();
+			loginPw = reqParam.getLoginPw();
+			
+			switch(reqParam.getOrgCd()) {
+			case "ccd":
+				svcCd = "creditCcd";
+				break;
+			case "card":
+				svcCd = "creditCard";
+				break;
+			}
+			
+			reqParam.setSvcCd(svcCd);	// 개인, 법인 구분 서비스 코드 추가 
+			
+			switch(reqParam.getLogInType()) {
+			case 1:	// id
+				// 인증 종류별 필요한 인증내역 제외하고 공란처리 (인증서 정보 제거)				
+				reqParam.setSignCert("");
+				reqParam.setSignPri("");
+				reqParam.setSignPw("");
+				break;
+			case 2: // 인증서
+				// 인증 종류별 필요한 인증내역 제외하고 공란처리 (id 정보 제거)				
+				reqParam.setLoginId("");
+				reqParam.setLoginPw("");
+				
+				// 동일 인증서 file 사용하는 경우 -> 한번만 복호화 처리 -> overwrite 처리
+				reqParamTmp = creditMap.get(signCert);
+				
+				if(reqParamTmp == null) {
+					if(signCert != null && signCert.length() > 0 && signPri != null && signPri.length() > 0) {
+						reqParam.setSignCert(sftpUtil.getFileData(signCert, "signCert.der"));
+						reqParam.setSignPri(sftpUtil.getFileData(signPri, "signPri.key"));
+						
+						creditMap.put(signCert, reqParam);
+					}
+				} else {
+					reqParam.setSignCert(reqParamTmp.getSignCert());
+					reqParam.setSignPri(reqParamTmp.getSignPri());
+				}
+				break;
+			}
+			
+			certList.add(reqParam);
+		}
+
+		
+		for(Entry<String, ServerScrapReqParam> e : certMap.entrySet()) {
+			certList.add(e.getValue());
+		}
+		
+		int sdf = 0;;
+		
+		/*
+			// 인증서
+			ServerScrapReqParam reqParamTmp = certMap.get(reqParam.getCertNm());
+			
+			if(reqParamTmp == null && reqParam.getCertNm() != null) {
+				SftpUtil sftpUtil = new SftpUtil();
+				
+				String signCert = sftpUtil.getFileData(reqParam.getSignCert(), "signCert.der");
+				String signPri = sftpUtil.getFileData(reqParam.getSignPri(), "signPri.key");
+				
+				reqParam.setSignCert(signCert);
+				reqParam.setSignPri(signPri);
+				
+				ScrapCertForm scrapCertForm = new ScrapCertForm();
+				scrapCertForm.setCertId(reqParam.getCertNm());
+				scrapCertForm.setServerScrapReqParam(reqParam);
+				certMap.put(reqParam.getCertNm(), reqParam);
+				continue;
+			}
+			
+			// 아이디
+			reqParamTmp = certMap.get(reqParam.getLoginId());
+			
+			if(reqParamTmp == null && reqParam.getLoginId() != null) {
+				certMap.put(reqParam.getLoginId(), reqParam);
+			}
+		 */
+		
+		for(Entry<String, ServerScrapReqParam> cert : certMap.entrySet()) {
+			ScrapCertForm scrapCertForm = new ScrapCertForm();
+			scrapCertForm.setCertId(cert.getKey());
+			scrapCertForm.setServerScrapReqParam(cert.getValue());
+			scrapCertFormList.add(scrapCertForm);
+		}
+		
+		int tmp = 0;
+		
+		return null;
+	}
+	
 }

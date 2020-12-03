@@ -33,6 +33,8 @@ import com.newzen.nzscrap.model.dto.SSbkB0002;
 
 @Mapper
 public interface ScrapMapper {
+	int insertHistoryReq(HistoryReq historyReqParam);
+	int insertHistoryRes(HistoryRes historyResParam);
 	int insertHistoryReqList(ArrayList<HistoryReq> historyReqList);
 	int insertHistoryResList(ArrayList<HistoryRes> historyResList);
 	

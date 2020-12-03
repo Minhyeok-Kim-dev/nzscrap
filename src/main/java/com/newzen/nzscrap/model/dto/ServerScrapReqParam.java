@@ -1,10 +1,15 @@
 package com.newzen.nzscrap.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author Minhyeok Kim
  * 비즈북스 - 스크래핑 요청 파라미터
  */
 public class ServerScrapReqParam {
+	@JsonIgnore
+	private String errYn;		// 인증정보 에러시 'Y'
+	
 	// 공통 fields
 	private String compCd;		// 회사코드	
 	private String appCd;		// 어플리케이션명
@@ -61,6 +66,12 @@ public class ServerScrapReqParam {
 	private String wrtYr;		// 조회년도
 	private String wrtQt;		// 조회분기 (1:1기예정, 2:1기확정, 3:1기예정+확정, 4:2기예정, 5:2기확정, 6:2기예정+확정)
 
+	public String getErrYn() {
+		return errYn;
+	}
+	public void setErrYn(String errYn) {
+		this.errYn = errYn;
+	}
 	public String getCompCd() {
 		return compCd;
 	}
@@ -273,14 +284,14 @@ public class ServerScrapReqParam {
 	}
 	@Override
 	public String toString() {
-		return "ServerScrapReqParam [compCd=" + compCd + ", appCd=" + appCd + ", svcCd=" + svcCd + ", orgCd=" + orgCd
-				+ ", signCert=" + signCert + ", signPri=" + signPri + ", certNm=" + certNm + ", signPw=" + signPw
-				+ ", agentId=" + agentId + ", agentPw=" + agentPw + ", loginId=" + loginId + ", loginPw=" + loginPw
-				+ ", bizNo=" + bizNo + ", fromDt=" + fromDt + ", toDt=" + toDt + ", bankCd=" + bankCd + ", acctNo="
-				+ acctNo + ", acctPw=" + acctPw + ", cardCd=" + cardCd + ", cardNo=" + cardNo + ", keyCd=" + keyCd
-				+ ", reqCd=" + reqCd + ", scrapMode=" + scrapMode + ", logInType=" + logInType + ", itrfCd=" + itrfCd
-				+ ", fromY=" + fromY + ", toY=" + toY + ", fromQ=" + fromQ + ", toQ=" + toQ + ", stlYr=" + stlYr
-				+ ", wrtArr=" + wrtArr + ", supByr=" + supByr + ", taxGb=" + taxGb + ", wrtYr=" + wrtYr + ", wrtQt="
-				+ wrtQt + "]";
+		return "ServerScrapReqParam [errYn=" + errYn + ", compCd=" + compCd + ", appCd=" + appCd + ", svcCd=" + svcCd
+				+ ", orgCd=" + orgCd + ", signCert=" + signCert + ", signPri=" + signPri + ", certNm=" + certNm
+				+ ", signPw=" + signPw + ", agentId=" + agentId + ", agentPw=" + agentPw + ", loginId=" + loginId
+				+ ", loginPw=" + loginPw + ", bizNo=" + bizNo + ", fromDt=" + fromDt + ", toDt=" + toDt + ", bankCd="
+				+ bankCd + ", acctNo=" + acctNo + ", acctPw=" + acctPw + ", cardCd=" + cardCd + ", cardNo=" + cardNo
+				+ ", keyCd=" + keyCd + ", reqCd=" + reqCd + ", scrapMode=" + scrapMode + ", logInType=" + logInType
+				+ ", itrfCd=" + itrfCd + ", fromY=" + fromY + ", toY=" + toY + ", fromQ=" + fromQ + ", toQ=" + toQ
+				+ ", stlYr=" + stlYr + ", wrtArr=" + wrtArr + ", supByr=" + supByr + ", taxGb=" + taxGb + ", wrtYr="
+				+ wrtYr + ", wrtQt=" + wrtQt + "]";
 	}
 }

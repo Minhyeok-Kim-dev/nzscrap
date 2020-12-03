@@ -1,6 +1,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.newzen.nzscrap.mapper.ScrapMapper">
+    <insert id="insertHistoryReq" parameterType="HistoryReq">
+        INSERT INTO History_Req
+        (
+           CompCd, AppCd, OrgCd, SvcCd, KeyCd
+         , ScrapDt, ReqCd, ScrapFromDt, ScrapToDt, ReqDt
+         , InJson
+        )
+        VALUES
+        (
+           #{compCd}, #{appCd}, #{orgCd}, #{svcCd}, #{keyCd}
+         , #{scrapDt}, #{reqCd}, #{scrapFromDt}, #{scrapToDt}, #{reqDt}
+         , #{inJson}
+        )
+    </insert>    
+    
+    <insert id="insertHistoryRes" parameterType="HistoryRes">
+        INSERT INTO History_Res
+        (
+           CompCd, ScrapDt, AppCd, OrgCd, SvcCd
+         , KeyCd, ReqCd, ResCd, ResMsg, ConnCnt
+         , ErrYn, ErrMsg, OutTime, BridgeAppVer, BridgeHostNm
+         , BridgeOsNm, BridgeReqDt, BridgeResDt, Worker, WorkerAppVer
+         , WorkerHostNm, WorkerOsNm, WorkerReqDt, WorkerResDt
+        )
+        VALUES
+        (
+           #{compCd}, #{scrapDt}, #{appCd}, #{orgCd}, #{svcCd}
+         , #{keyCd}, #{reqCd}, #{resCd}, #{resMsg}, #{connCnt}
+         , #{errYn}, #{errMsg}, #{outTime}, #{bridgeAppVer}, #{bridgeHostNm}
+         , #{bridgeOsNm}, #{bridgeReqDt}, #{bridgeResDt}, #{worker}, #{workerAppVer}
+         , #{workerHostNm}, #{workerOsNm}, #{workerReqDt}, #{workerResDt}
+        )
+    </insert>
     <insert id="insertHistoryReqList" parameterType="java.util.List">
         INSERT INTO History_Req
         (
@@ -67,11 +100,41 @@
 	        )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , SvcCd = VALUES(SvcCd)
-         , SupByr = VALUES(SupByr)
-         , MakeDt = VALUES(MakeDt)
-         , IssueNo = VALUES(IssueNo)
+           IssueNoDisp = VALUES(IssueNoDisp)
+         , IssueDt = VALUES(IssueDt)
+         , SendDt = VALUES(SendDt)
+         , SupBizNo = VALUES(SupBizNo)
+         , SupBizSubNo = VALUES(SupBizSubNo)
+         , SupCorpNm = VALUES(SupCorpNm)
+         , SupRepNm = VALUES(SupRepNm)
+         , SupAddress = VALUES(SupAddress)
+         , ByrBizNo = VALUES(ByrBizNo)
+         , ByrBizSubNo = VALUES(ByrBizSubNo)
+         , ByrCorpNm = VALUES(ByrCorpNm)
+         , ByrRepNm = VALUES(ByrRepNm)
+         , ByrAddress = VALUES(ByrAddress)
+         , TotAmt = VALUES(TotAmt)
+         , SupAmt = VALUES(SupAmt)
+         , TaxAmt = VALUES(TaxAmt)
+         , TaxClsf = VALUES(TaxClsf)
+         , TaxKnd = VALUES(TaxKnd)
+         , IsnType = VALUES(IsnType)
+         , Bigo = VALUES(Bigo)
+         , DemandGb = VALUES(DemandGb)
+         , SupEmail = VALUES(SupEmail)
+         , ByrEmail1 = VALUES(ByrEmail1)
+         , ByrEmail2 = VALUES(ByrEmail2)
+         , ItemDt = VALUES(ItemDt)
+         , ItemNm = VALUES(ItemNm)
+         , ItemStd = VALUES(ItemStd)
+         , ItemQty = VALUES(ItemQty)
+         , ItemUnt = VALUES(ItemUnt)
+         , ItemSupAmt = VALUES(ItemSupAmt)
+         , ItemTaxAmt = VALUES(ItemTaxAmt)
+         , ItemBigo = VALUES(ItemBigo)
+         , ReqCd = VALUES(ReqCd)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ300XItemList" parameterType="java.util.List">
@@ -92,10 +155,21 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , SvcCd = VALUES(SvcCd)
-         , IssueNo = VALUES(IssueNo)
-         , ItemNo = VALUES(ItemNo)
+           SupBizNo = VALUES(SupBizNo)
+         , ByrBizNo = VALUES(ByrBizNo)
+         , ItemDt = VALUES(ItemDt)
+         , ItemNm = VALUES(ItemNm)
+         , ItemStd = VALUES(ItemStd)
+         , ItemQty = VALUES(ItemQty)
+         , ItemUnt = VALUES(ItemUnt)
+         , ItemSupAmt = VALUES(ItemSupAmt)
+         , ItemTaxAmt = VALUES(ItemTaxAmt)
+         , ItemBigo = VALUES(ItemBigo)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , IssueNoDisp = VALUES(IssueNoDisp)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4001List" parameterType="java.util.List">
@@ -114,9 +188,17 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , TrDt = VALUES(TrDt)
-         , TrTm = VALUES(TrTm)
+           IssueGb = VALUES(IssueGb)
+         , SupAmt = VALUES(SupAmt)
+         , TaxAmt = VALUES(TaxAmt)
+         , Tip = VALUES(Tip)
+         , TotAmt = VALUES(TotAmt)
+         , FrPartNo = VALUES(FrPartNo)
+         , TrGb = VALUES(TrGb)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4002List" parameterType="java.util.List">
@@ -139,9 +221,24 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , TrDt = VALUES(TrDt)
-         , TrTm = VALUES(TrTm)
+           UseStore = VALUES(UseStore)
+         , StoreNo = VALUES(StoreNo)
+         , SupAmt = VALUES(SupAmt)
+         , TaxAmt = VALUES(TaxAmt)
+         , Tip = VALUES(Tip)
+         , TotAmt = VALUES(TotAmt)
+         , FrPartNo = VALUES(FrPartNo)
+         , TrGb = VALUES(TrGb)
+         , DdcYn = VALUES(DdcYn)
+         , BmanClNm = VALUES(BmanClNm)
+         , TfbCd = VALUES(TfbCd)
+         , TfbNm = VALUES(TfbNm)
+         , Bigo = VALUES(Bigo)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , IssueGb = VALUES(IssueGb)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4010List" parameterType="java.util.List">
@@ -162,11 +259,21 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , AprvDt = VALUES(AprvDt)
-         , SplCft = VALUES(SplCft) 
-         , TotaTrsAmt = VALUES(TotaTrsAmt) 
-         , MrntTxprDscmNoEncCntn = VALUES(MrntTxprDscmNoEncCntn)
+           VatDdcClCd = VALUES(VatDdcClCd)
+         , CrcmClNm = VALUES(CrcmClNm)
+         , BusnCrdCardNoEncCntn = VALUES(BusnCrdCardNoEncCntn) 
+         , MrntTxprNm = VALUES(MrntTxprNm) 
+         , VaTxamt = VALUES(VaTxamt)
+         , Tip = VALUES(Tip)
+         , BmanClNm = VALUES(BmanClNm) 
+         , BcNm = VALUES(BcNm)
+         , TfbNm = VALUES(TfbNm)
+         , DdcYnNm = VALUES(DdcYnNm) 
+         , VatDdcClNm = VALUES(VatDdcClNm)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd) 
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4020List" parameterType="java.util.List">
@@ -187,11 +294,20 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , TrsDt = VALUES(TrsDt)
-         , SplCft = VALUES(SplCft) 
-         , TotaTrsAmt = VALUES(TotaTrsAmt) 
-         , MrntTxprDscmNoEncCntn = VALUES(MrntTxprDscmNoEncCntn)
+           CrccTxprNm = VALUES(CrccTxprNm)
+         , WlfCardNoEncCntn = VALUES(WlfCardNoEncCntn)
+         , MrntTxprNm = VALUES(MrntTxprNm) 
+         , VaTxamt = VALUES(VaTxamt) 
+         , Tip = VALUES(Tip)
+         , BmanClNm = VALUES(BmanClNm)
+         , TfbNm = VALUES(TfbNm) 
+         , TrsClNm = VALUES(TrsClNm) 
+         , DdcYnNm = VALUES(DdcYnNm)
+         , VatDdcClNm = VALUES(VatDdcClNm)
+         , Rmk = VALUES(Rmk) 
+         , ReqCd = VALUES(ReqCd) 
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4050List" parameterType="java.util.List">
@@ -210,8 +326,15 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , StlYm = VALUES(StlYm)
+           StlScnt = VALUES(StlScnt)
+         , TotaStlAmt = VALUES(TotaStlAmt)
+         , EtcSls = VALUES(EtcSls)
+         , PurcEuCardSls = VALUES(PurcEuCardSls)
+         , Tip = VALUES(Tip)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4060List" parameterType="java.util.List">
@@ -230,8 +353,15 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , SttsYm = VALUES(SttsYm)
+           CshSlsSplCftAmt = VALUES(CshSlsSplCftAmt)
+         , CshSlsVatAmt = VALUES(CshSlsVatAmt)
+         , CshSlsTipAmt = VALUES(CshSlsTipAmt)
+         , CshSlsAmt = VALUES(CshSlsAmt)
+         , CshSlsScnt = VALUES(CshSlsScnt)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4070List" parameterType="java.util.List">
@@ -250,11 +380,12 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , ExprRtnNo = VALUES(ExprRtnNo)
-         , ShpnDt = VALUES(ShpnDt)
-         , IsoCrncCd = VALUES(IsoCrncCd)
-         , Fmt = VALUES(Fmt)
+           Exgrt = VALUES(Exgrt)
+         , Wtt = VALUES(Wtt)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ5002List" parameterType="java.util.List">
@@ -285,10 +416,47 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , ItrfCd = VALUES(ItrfCd)
-         , TxnrmYm = VALUES(TxnrmYm) 
-         , RtnClCd = VALUES(RtnClCd) 
+           RtnDt = VALUES(RtnDt)
+         , MtfbCd = VALUES(MtfbCd)
+         , FrsRgtDtm = VALUES(FrsRgtDtm)
+         , RtnClNm = VALUES(RtnClNm)
+         , Tin = VALUES(Tin)
+         , RtnCvaId = VALUES(RtnCvaId)
+         , RtnClDetailCd = VALUES(RtnClDetailCd)
+         , RtnClDetailNm = VALUES(RtnClDetailNm)
+         , PymnYm = VALUES(PymnYm)
+         , SbmsYm = VALUES(SbmsYm)
+         , StmnKndCd = VALUES(StmnKndCd)
+         , StmnKndNm = VALUES(StmnKndNm)
+         , TxnrmStrtDt = VALUES(TxnrmStrtDt)
+         , TxnrmEndDt = VALUES(TxnrmEndDt)
+         , TxprNm = VALUES(TxprNm)
+         , TxprNo = VALUES(TxprNo)
+         , RcatNo = VALUES(RcatNo)
+         , RcatDt = VALUES(RcatDt)
+         , CvaAplnDtm = VALUES(CvaAplnDtm)
+         , ChrgTxhfOgzCd = VALUES(ChrgTxhfOgzCd)
+         , UserId = VALUES(UserId)
+         , StasAmt = VALUES(StasAmt)
+         , OgntxSbtrScpmTxamt = VALUES(OgntxSbtrScpmTxamt)
+         , OgntxInpmSchuTxamt = VALUES(OgntxInpmSchuTxamt)
+         , OgntxSbtrPmtTxamt = VALUES(OgntxSbtrPmtTxamt)
+         , FnftxSbtrScpmTxamt = VALUES(FnftxSbtrScpmTxamt)
+         , FnftxInpmSchuTxamt = VALUES(FnftxInpmSchuTxamt)
+         , FnftxSbtrPmtTxamt = VALUES(FnftxSbtrPmtTxamt)
+         , AprpAfthPmtTxamt = VALUES(AprpAfthPmtTxamt)
+         , SurcRtnClCd = VALUES(SurcRtnClCd)
+         , TmonCrfwRfndTxamt = VALUES(TmonCrfwRfndTxamt)
+         , RtnRfndClCd = VALUES(RtnRfndClCd)
+         , RfndAplnAmt = VALUES(RfndAplnAmt)
+         , VatRtnYr = VALUES(VatRtnYr)
+         , Txtpe = VALUES(Txtpe)
+         , VatActlPmtTxamt = VALUES(VatActlPmtTxamt)
+         , VlntSbtrPmtTxamt = VALUES(VlntSbtrPmtTxamt)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ0006List" parameterType="java.util.List">
@@ -317,11 +485,38 @@
 	        )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , SupByr = VALUES(SupByr)
-         , TaxGb = VALUES(TaxGb) 
-         , WrtYr = VALUES(WrtYr)
-         , WrtQt = VALUES(WrtQt)
+           WrtDtFrom = VALUES(WrtDtFrom)
+         , WrtDtTo = VALUES(WrtDtTo)
+         , WithIn_bsnoIsnClplcCnt = VALUES(WithIn_bsnoIsnClplcCnt) 
+         , WithIn_bsnoIsnScnt = VALUES(WithIn_bsnoIsnScnt)
+         , WithIn_bsnoIsnSplCft = VALUES(WithIn_bsnoIsnSplCft) 
+         , WithIn_bsnoIsnTxamt = VALUES(WithIn_bsnoIsnTxamt)
+         , WithIn_resnoIsnClplcCnt= VALUES(WithIn_resnoIsnClplcCnt) 
+         , WithIn_resnoIsnScnt = VALUES(WithIn_resnoIsnScnt)
+         , WithIn_resnoIsnSplCft = VALUES(WithIn_resnoIsnSplCft) 
+         , WithIn_resnoIsnTxamt = VALUES(WithIn_resnoIsnTxamt)
+         , WithIn_totCnt = VALUES(WithIn_totCnt) 
+         , WithIn_totPurchplcCnt = VALUES(WithIn_totPurchplcCnt)
+         , WithIn_totSellplcCnt = VALUES(WithIn_totSellplcCnt) 
+         , WithIn_totSplCft = VALUES(WithIn_totSplCft)
+         , WithIn_totTxamt= VALUES(WithIn_totTxamt) 
+         , Et_bsnoIsnClplcCnt = VALUES(Et_bsnoIsnClplcCnt)
+         , Et_bsnoIsnScnt = VALUES(Et_bsnoIsnScnt) 
+         , Et_bsnoIsnSplCft = VALUES(Et_bsnoIsnSplCft)
+         , Et_bsnoIsnTxamt = VALUES(Et_bsnoIsnTxamt) 
+         , Et_resnoIsnClplcCnt = VALUES(Et_resnoIsnClplcCnt)
+         , Et_resnoIsnScnt = VALUES(Et_resnoIsnScnt) 
+         , Et_resnoIsnSplCft = VALUES(Et_resnoIsnSplCft)
+         , Et_resnoIsnTxamt = VALUES(Et_resnoIsnTxamt) 
+         , Et_totCnt= VALUES(Et_totCnt)
+         , Et_totPurchplcCnt = VALUES(Et_totPurchplcCnt) 
+         , Et_totSellplcCnt = VALUES(Et_totSellplcCnt)
+         , Et_totSplCft = VALUES(Et_totSplCft) 
+         , Et_totTxamt = VALUES(Et_totTxamt)
+         , Rmk = VALUES(Rmk) 
+         , ReqCd = VALUES(ReqCd)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)  
     </insert>
     
     <insert id="insertSHometaxZ0006DtlList" parameterType="java.util.List">
@@ -346,13 +541,27 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , SupByr = VALUES(SupByr)
-         , TaxGb = VALUES(TaxGb) 
-         , WrtYr = VALUES(WrtYr)
-         , WrtQt = VALUES(WrtQt)
-         , WrtDt = VALUES(WrtDt)
-         , Etan = VALUES(Etan)
+           WrtDtFrom = VALUES(WrtDtFrom)
+         , WrtDtTo = VALUES(WrtDtTo)
+         , IsnDtm = VALUES(IsnDtm) 
+         , TmsnDt = VALUES(TmsnDt)
+         , DmnrTxprDscmNo = VALUES(DmnrTxprDscmNo) 
+         , DmnrMpbNoStr = VALUES(DmnrMpbNoStr)
+         , TnmNm = VALUES(TnmNm) 
+         , RprsFnm = VALUES(RprsFnm)
+         , TotaAmt = VALUES(TotaAmt) 
+         , SupSplCft = VALUES(SupSplCft)
+         , SumTxamt = VALUES(SumTxamt) 
+         , EtxivKndCd = VALUES(EtxivKndCd)
+         , IsnTypeCd = VALUES(IsnTypeCd) 
+         , EtxivSq1RmrkCntn = VALUES(EtxivSq1RmrkCntn)
+         , RecApeClCd = VALUES(RecApeClCd) 
+         , MchrgEmlAdrSls = VALUES(MchrgEmlAdrSls)
+         , MchrgEmlAdrPrh = VALUES(MchrgEmlAdrPrh) 
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd) 
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt) 
     </insert>
     
     <insert id="insertSCardsalesB0002List" parameterType="java.util.List">
@@ -371,8 +580,21 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , MerNo = VALUES(MerNo)
+           BankCd = VALUES(BankCd)
+         , InAmt = VALUES(InAmt)
+         , OutAmt = VALUES(OutAmt)
+         , TrBr = VALUES(TrBr)
+         , TrNm = VALUES(TrNm)
+         , TrTp = VALUES(TrTp)
+         , TrDetail = VALUES(TrDetail)
+         , RecvAcctNo = VALUES(RecvAcctNo)
+         , Memo = VALUES(Memo)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , TrRnd = VALUES(TrRnd)
+         , WlBn = VALUES(WlBn)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCardsalesB0011DtlList" parameterType="java.util.List">
@@ -396,7 +618,22 @@
            CompCd = VALUES(CompCd)
          , TrDt = VALUES(TrDt)
          , TrTm = VALUES(TrTm)
+         , CardRealNo = VALUES(CardRealNo)
          , ApprNo = VALUES(ApprNo)
+         , TrDiv = VALUES(TrDiv)
+         , CardCorp1 = VALUES(CardCorp1)
+         , CardCorp2 = VALUES(CardCorp2)
+         , MerNo = VALUES(MerNo)
+         , CardKndCd = VALUES(CardKndCd)
+         , CardKnd = VALUES(CardKnd)
+         , CardNum = VALUES(CardNum)
+         , ApprAmt = VALUES(ApprAmt)
+         , InstDiv = VALUES(InstDiv)
+         , InsTrm = VALUES(InsTrm)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCardsalesB0011SumList" parameterType="java.util.List">
@@ -415,8 +652,16 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , TrDt = VALUES(TrDt)
+           TrSumAmt = VALUES(TrSumAmt)
+         , TrSumCnt = VALUES(TrSumCnt)
+         , ApprSumAmt = VALUES(ApprSumAmt)
+         , ApprSumCnt = VALUES(ApprSumCnt)
+         , CanSumAmt = VALUES(CanSumAmt)
+         , CanSumCnt = VALUES(CanSumCnt)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCardsalesB0021DtlList" parameterType="java.util.List">
@@ -439,11 +684,24 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , TrDt = VALUES(TrDt)
-         , BuyDt = VALUES(BuyDt) 
-         , ApprNo = VALUES(ApprNo) 
-         , PayAmt = VALUES(PayAmt)
+           CardCorp1 = VALUES(CardCorp1)
+         , CardCorp2 = VALUES(CardCorp2)
+         , MerNo = VALUES(MerNo)
+         , CardKnd = VALUES(CardKnd) 
+         , CardNum = VALUES(CardNum)
+         , CardDivCd = VALUES(CardDivCd) 
+         , CardDiv = VALUES(CardDiv)
+         , BuyAmt = VALUES(BuyAmt) 
+         , CommMem = VALUES(CommMem)
+         , CommPoint = VALUES(CommPoint) 
+         , CommEtc = VALUES(CommEtc)
+         , CommSum = VALUES(CommSum) 
+         , CommVat = VALUES(CommVat)
+         , PayAmt = VALUES(PayAmt) 
+         , PayDt = VALUES(PayDt)
+         , Rmk = VALUES(Rmk) 
+         , ReqCd = VALUES(ReqCd)
+         , RegId = VALUES(RegId)  
     </insert>
     
     <insert id="insertSCardsalesB0021SumList" parameterType="java.util.List">
@@ -462,8 +720,18 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , BuyDt = VALUES(BuyDt)
+           BuySumAmt = VALUES(BuySumAmt)
+         , BuySumCnt = VALUES(BuySumCnt)
+         , PaySumAmt = VALUES(PaySumAmt)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , CommMem = VALUES(CommMem)
+         , CommPoint = VALUES(CommPoint)
+         , CommEtc = VALUES(CommEtc)
+         , CommSum = VALUES(CommSum)
+         , CommVat = VALUES(CommVat)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCardsalesB0031DtlList" parameterType="java.util.List">
@@ -486,7 +754,20 @@
         ON DUPLICATE KEY UPDATE 
            CompCd = VALUES(CompCd)
          , PayDt = VALUES(PayDt)
+         , MemNo = VALUES(MemNo)
          , AcctNo = VALUES(AcctNo)
+         , CardCorp1 = VALUES(CardCorp1)
+         , Bank = VALUES(Bank)
+         , SalesCnt = VALUES(SalesCnt)
+         , SalesAmt = VALUES(SalesAmt)
+         , DetAmt = VALUES(DetAmt)
+         , CommVat = VALUES(CommVat)
+         , EtcAmt = VALUES(EtcAmt)
+         , RealPayAmt = VALUES(RealPayAmt)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCardsalesB0031SumList" parameterType="java.util.List">
@@ -503,8 +784,13 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , PayDt = VALUES(PayDt)
+           SalesSumAmt = VALUES(SalesSumAmt)
+         , SalesSumCnt = VALUES(SalesSumCnt)
+         , PaySumAmt = VALUES(PaySumAmt)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSBankB0002List" parameterType="java.util.List">
@@ -525,10 +811,21 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , AcctNo = VALUES(AcctNo)
-         , TrDt = VALUES(TrDt)
-         , TrTm = VALUES(TrTm)
+           BankCd = VALUES(BankCd)
+         , InAmt = VALUES(InAmt)
+         , OutAmt = VALUES(OutAmt)
+         , TrBr = VALUES(TrBr)
+         , TrNm = VALUES(TrNm)
+         , TrTp = VALUES(TrTp)
+         , TrDetail = VALUES(TrDetail)
+         , RecvAcctNo = VALUES(RecvAcctNo)
+         , Memo = VALUES(Memo)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , TrRnd = VALUES(TrRnd)
+         , WlBn = VALUES(WlBn)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCbkB0002List" parameterType="java.util.List">
@@ -551,10 +848,22 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , AcctNo = VALUES(AcctNo)
-         , TrDt = VALUES(TrDt)
-         , TrTm = VALUES(TrTm)
+           BankCd = VALUES(BankCd)
+         , InAmt = VALUES(InAmt)
+         , OutAmt = VALUES(OutAmt)
+         , CurCd = VALUES(CurCd)
+         , TrBr = VALUES(TrBr)
+         , TrNm = VALUES(TrNm)
+         , TrTp = VALUES(TrTp)
+         , TrDetail = VALUES(TrDetail)
+         , RecvAcctNo = VALUES(RecvAcctNo)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , TrRnd = VALUES(TrRnd)
+         , WlBn = VALUES(WlBn)
+         , Memo = VALUES(Memo)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSSbkB0002List" parameterType="java.util.List">
@@ -575,10 +884,21 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , AcctNo = VALUES(AcctNo)
-         , TrDt = VALUES(TrDt)
-         , TrTm = VALUES(TrTm)
+           BankCd = VALUES(BankCd)
+         , InAmt = VALUES(InAmt)
+         , OutAmt = VALUES(OutAmt)
+         , TrBr = VALUES(TrBr)
+         , TrNm = VALUES(TrNm)
+         , TrTp = VALUES(TrTp)
+         , TrDetail = VALUES(TrDetail)
+         , RecvAcctNo = VALUES(RecvAcctNo)
+         , Memo = VALUES(Memo)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , TrRnd = VALUES(TrRnd)
+         , WlBn = VALUES(WlBn)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCardC0005List" parameterType="java.util.List">
@@ -603,9 +923,33 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , UseDt = VALUES(UseDt)
-         , ApprNo = VALUES(ApprNo)
+           UseTm = VALUES(UseTm)
+         , UseCard = VALUES(UseCard)
+         , UseStore = VALUES(UseStore)
+         , UseAmt = VALUES(UseAmt)
+         , UseDiv = VALUES(UseDiv)
+         , ApprSt = VALUES(ApprSt)
+         , PartialCancelAmt = VALUES(PartialCancelAmt)
+         , InstMon = VALUES(InstMon)
+         , DiscAmt = VALUES(DiscAmt)
+         , SavePoint = VALUES(SavePoint)
+         , SettleDt = VALUES(SettleDt)
+         , StoreBizNo = VALUES(StoreBizNo)
+         , StoreCeo = VALUES(StoreCeo)
+         , StoreAddr = VALUES(StoreAddr)
+         , StoreTel = VALUES(StoreTel)
+         , StoreType = VALUES(StoreType)
+         , ExYn = VALUES(ExYn)
+         , ExCurCd = VALUES(ExCurCd)
+         , UseExAmt = VALUES(UseExAmt)
+         , AddTax = VALUES(AddTax)
+         , Tip = VALUES(Tip)
+         , StoreBizNo2 = VALUES(StoreBizNo2)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , GivenCardNo = VALUES(GivenCardNo)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCcdC0005List" parameterType="java.util.List">
@@ -630,9 +974,35 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           CompCd = VALUES(CompCd)
-         , UseDt = VALUES(UseDt)
-         , ApprNo = VALUES(ApprNo)
+           UseTm = VALUES(UseTm)
+         , UseCard = VALUES(UseCard)
+         , UseStore = VALUES(UseStore)
+         , UseAmt = VALUES(UseAmt)
+         , UseExAmt = VALUES(UseExAmt)
+         , ExCurCd = VALUES(ExCurCd)
+         , UseDiv = VALUES(UseDiv)
+         , ApprSt = VALUES(ApprSt)
+         , InstMon = VALUES(InstMon)
+         , DiscAmt = VALUES(DiscAmt)
+         , SavePoint = VALUES(SavePoint)
+         , SettleDt = VALUES(SettleDt)
+         , StoreBizNo = VALUES(StoreBizNo)
+         , StoreCeo = VALUES(StoreCeo)
+         , StoreAddr = VALUES(StoreAddr)
+         , StoreTel = VALUES(StoreTel)
+         , StoreType = VALUES(StoreType)
+         , AddTax = VALUES(AddTax)
+         , Tip = VALUES(Tip)
+         , TaxType = VALUES(TaxType)
+         , StoreSt = VALUES(StoreSt)
+         , StoreNo = VALUES(StoreNo)
+         , Rmk = VALUES(Rmk)
+         , ReqCd = VALUES(ReqCd)
+         , GivenCardNo = VALUES(GivenCardNo)
+         , RegId = VALUES(RegId)
+         , RegDt = VALUES(RegDt)
+         , UptId = VALUES(UptId)
+         , UptDt = VALUES(UptDt)
     </insert>
     
     

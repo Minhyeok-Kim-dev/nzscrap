@@ -16,6 +16,7 @@ public class InJsonCard extends InJson {
 	private String sdate;		// 조회 시작일
 	private String edate;		// 조회 종료일
 	private String cardCd;		// 카드사 코드
+	private String svcOption;	// 가맹점 상세정보
 
 	// Constructors
 	public InJsonCard() {
@@ -106,11 +107,18 @@ public class InJsonCard extends InJson {
 		this.cardCd = cardCd;
 	}
 
+	public String getSvcOption() {
+		return svcOption;
+	}
+
+	public void setSvcOption(String svcOption) {
+		this.svcOption = svcOption;
+	}
+
 	@Override
 	public String toString() {
 		return "InJsonCard [loginMethod=" + loginMethod + ", signCert=" + signCert + ", signPri=" + signPri
 				+ ", signPw=" + signPw + ", userId=" + userId + ", userPw=" + userPw + ", cardNo=" + cardNo + ", sdate="
-				+ sdate + ", edate=" + edate + ", cardCd=" + cardCd + "]";
+				+ sdate + ", edate=" + edate + ", cardCd=" + cardCd + ", svcOption=" + svcOption + "]";
 	}
-	
 }

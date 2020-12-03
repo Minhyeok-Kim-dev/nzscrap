@@ -1,5 +1,10 @@
 package com.newzen.nzscrap.model.dto;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+
+import org.apache.commons.beanutils.BeanUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -10,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HistoryRes {
+	// Fields
 	private String compCd;			// 회사코드
 	private String scrapDt;			// 스크랩일자
 	private String appCd;			// 어플리케이션명
@@ -35,6 +41,69 @@ public class HistoryRes {
 	private String workerReqDt;		// Worker 서버 요청시간
 	private String workerResDt;		// Worker 서버 응답시간
 
+	// Constructors
+	public HistoryRes() {
+		super();
+	}
+	
+	// - Copy constructor
+	public HistoryRes(HistoryRes historyRes) throws IllegalAccessException, InvocationTargetException {
+		String reqCd = historyRes.getReqCd();
+		
+		if(reqCd != null && reqCd.length() > 14) {
+			historyRes.setScrapDt(reqCd.substring(0, 8));	// 스크랩일자 (yyyyMMdd)
+		}
+
+		// Deep copy
+		BeanUtils.copyProperties(this, historyRes);
+	}
+	// - 스크래핑 결과내용으로 생성시
+	public HistoryRes(ServerScrapReqParam reqParam, HashMap<String, Object> resParam) {
+		// 공통필드 설정
+		this.setCompCd(reqParam.getCompCd());
+		this.setAppCd(reqParam.getAppCd());
+		this.setOrgCd(reqParam.getOrgCd());
+		this.setSvcCd(reqParam.getSvcCd());
+		this.setKeyCd(reqParam.getKeyCd());
+		this.setResCd(resParam.get("resCd").toString());
+		this.setConnCnt("0");
+		this.setErrYn(resParam.get("errYn").toString());
+		this.setErrMsg(resParam.get("errMsg").toString());
+		this.setOutTime("");
+		this.setBridgeAppVer(resParam.get("bridgeAppVer").toString());
+		this.setBridgeHostNm(resParam.get("bridgeHostNm").toString());
+		this.setBridgeOsNm(resParam.get("bridgeOsNm").toString());
+		this.setBridgeReqDt(resParam.get("bridgeReqDt").toString());
+		this.setBridgeResDt(resParam.get("bridgeResDt").toString());
+		this.setWorker(resParam.get("worker").toString());
+		this.setWorkerAppVer(resParam.get("workerAppVer").toString());
+		this.setWorkerHostNm(resParam.get("workerHostNm").toString());
+		this.setWorkerOsNm(resParam.get("workerOsNm").toString());
+		this.setWorkerReqDt(resParam.get("workerReqDt").toString());
+		this.setWorkerResDt(resParam.get("workerResDt").toString());
+		
+		// - 요청코드 관련
+		String reqCd = reqParam.getReqCd();
+		this.setReqCd(reqCd);
+		if(reqCd != null && reqCd.length() > 14) {
+			this.setScrapDt(reqCd.substring(0, 8));	// 스크랩일자 (yyyyMMdd)
+		}
+		
+		// 추가필드 설정
+		switch(reqParam.getOrgCd()) {
+		// - 홈택스
+		case "hometax":
+			this.setConnCnt(resParam.get("connCnt").toString());
+			this.setOutTime(resParam.get("outTime").toString());
+			break;
+		// - 여신
+		case "cardsales":
+			this.setConnCnt(resParam.get("connCnt").toString());
+			break;
+		}
+	}
+	
+	// Getters & Setters
 	public String getCompCd() {
 		return compCd;
 	}

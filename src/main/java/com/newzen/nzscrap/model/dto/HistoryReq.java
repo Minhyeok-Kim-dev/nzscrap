@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HistoryReq {
+	// Fields
 	private String compCd;		// 회사코드
 	private String appCd;		// 어플리케이션명
 	private String orgCd;		// 기관코드
@@ -22,6 +23,30 @@ public class HistoryReq {
 	private String reqDt;		// 요청일시
 	private String inJson;		// 요청파라미터
 
+	// Constructors
+	public HistoryReq() {
+		super();
+	}
+	// - 스크래핑 요청내용으로 생성시
+	public HistoryReq(ServerScrapReqParam reqParam) {
+		String reqCd = reqParam.getReqCd();
+		
+		this.setCompCd(reqParam.getCompCd());
+		this.setAppCd(reqParam.getAppCd());
+		this.setOrgCd(reqParam.getOrgCd());
+		this.setSvcCd(reqParam.getSvcCd());
+		this.setKeyCd(reqParam.getKeyCd());
+		this.setReqCd(reqCd);
+		this.setScrapFromDt(reqParam.getFromDt());
+		this.setScrapToDt(reqParam.getToDt());
+		
+		if(reqCd != null && reqCd.length() > 14) {
+			this.setScrapDt(reqCd.substring(0, 8));	// 스크랩일자 (yyyyMMdd)
+			this.setReqDt(reqCd.substring(0, 14));	// 요청일시 (yyyyMMddhhmmss)
+		}
+	}
+	
+	// Getters & Setters
 	public String getCompCd() {
 		return compCd;
 	}

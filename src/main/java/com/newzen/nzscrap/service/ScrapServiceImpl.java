@@ -187,19 +187,37 @@ public class ScrapServiceImpl implements ScrapService {
 		}
 	}
 
+	/**
+	 * sendScrapByReqParam
+	 * 
+	 * 요청정보에 따라 스크래핑 처리를 수행합니다.
+	 * - 요청전문 inJson 생성
+	 * - 요청전문 스크래핑 전송
+	 * - 결과 내용(meta data)으로 스크래핑 데이터 생성
+	 * - 스크래핑 히스토리 작업
+	 *   > 스크래핑 요청
+	 *   > 스크래핑 응답
+	 *   > 히스토리 DB처리
+	 * - 스크래핑 데이터 작업
+	 *   > 데이터 생성
+	 *   > 데이터 DB처리 (중계서버)
+	 *   > 데이터 비즈북스 전송
+	 * 
+	 * @param reqParam - 요청 정보
+	 */
 	@SuppressWarnings("unchecked")
 	void sendScrapByReqParam(ServerScrapReqParam reqParam) {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		try {
-			// - 요청 inJson 생성
+			// # 요청전문 inJson 생성
 			String inJson = makeInJson(reqParam);
 
 			if (inJson.isEmpty() == false) {
-				// - 요청내용 스크래핑 전송
+				// # 요청전문 스크래핑 전송
 				String jsonScrapData = sendScrap(inJson, reqParam.getReqCd());
 
-				// - 결과 내용(meta data)으로 스크래핑 데이터 생성
+				// # 결과 내용(meta data)으로 스크래핑 데이터 생성
 				HashMap<String, Object> resParam = objectMapper.readValue(jsonScrapData, HashMap.class);
 				ArrayList<HashMap<String, Object>> outJsonList = (ArrayList<HashMap<String, Object>>) resParam.get("outJsonList");
 
@@ -209,7 +227,7 @@ public class ScrapServiceImpl implements ScrapService {
 
 				HashMap<String, Object> outJson = outJsonList.get(0);
 
-				// #5. 스크래핑 히스토리 작업
+				// # 스크래핑 히스토리 작업
 				// - 히스토리 요청내용 생성
 				HistoryReq historyReq = new HistoryReq(reqParam);
 
@@ -236,11 +254,11 @@ public class ScrapServiceImpl implements ScrapService {
 
 				sendDataToBizbooks(historyListMap);
 
-				// #6. 스크래핑 데이터 작업
+				// # 스크래핑 데이터 작업
 				// - 데이터 생성
 				HashMap<String, Object> insertDataMap = makeInsertData_test(outJson, reqParam);
 
-				// - 데이터 DB처리
+				// - 데이터 DB처리 (중계서버)
 				insertScrapData(insertDataMap);
 
 				// - 데이터 비즈북스 전송

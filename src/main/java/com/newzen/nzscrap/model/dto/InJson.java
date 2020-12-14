@@ -6,11 +6,12 @@ package com.newzen.nzscrap.model.dto;
  */
 public class InJson {
 	// Fields
-	private String appCd;	// 어플리케이션 코드
-	private String orgCd;	// 기관코드
-	private String svcCd;	// 서비스 코드
-	private String reqCd;	// 요청코드
-	private String proxy;	// proxy 주소 (ip:port)
+	private String appCd;		// 어플리케이션 코드
+	private String orgCd;		// 기관코드
+	private String svcCd;		// 서비스 코드
+	private String reqCd;		// 요청코드
+	private String proxy;		// proxy 주소 (ip:port)
+	private String exeTimeout;	// infotech 내부 테스트용 param (201214)  
 
 	// Constructors
 	public InJson() {
@@ -23,6 +24,7 @@ public class InJson {
 		this.svcCd = svcCd;
 		this.reqCd = reqCd;
 		this.proxy = proxy;
+		this.exeTimeout = "300";	// TODO: infotech 테스트 이후 제거 (201214)
 	}
 
 	// Getters & Setters
@@ -66,9 +68,17 @@ public class InJson {
 		this.proxy = proxy;
 	}
 
+	public String getExeTimeout() {
+		return exeTimeout;
+	}
+
+	public void setExeTimeout(String exeTimeout) {
+		this.exeTimeout = exeTimeout;
+	}
+
 	@Override
 	public String toString() {
 		return "InJson [appCd=" + appCd + ", orgCd=" + orgCd + ", svcCd=" + svcCd + ", reqCd=" + reqCd + ", proxy="
-				+ proxy + "]";
+				+ proxy + ", exeTimeout=" + exeTimeout + "]";
 	}
 }

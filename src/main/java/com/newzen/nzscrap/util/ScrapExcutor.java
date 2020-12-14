@@ -16,7 +16,8 @@ public class ScrapExcutor extends QuartzJobBean{
 
 	@Override
 	protected void executeInternal(JobExecutionContext arg0) throws JobExecutionException {
-		//scrapService.scrap();
+		System.out.println("#########" + DateUtil.getCurrentFull());
+		scrapService.scrap();
 	}
 
 }

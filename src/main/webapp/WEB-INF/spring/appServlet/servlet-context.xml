@@ -3,9 +3,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- Async -->
+    <task:executor id="testExcutor" pool-size="5" />
+    <task:annotation-driven executor="testExcutor" />
 
     <!-- Quartz -->
     <!-- Quartz 2.x 버전 -->
@@ -29,8 +34,8 @@
         </beans:property>
         
         <beans:property name="cronExpression">
-            <!-- 매  5분마다 실행 --> 
-            <beans:value>0 0/5 * * * ?</beans:value>
+            <!-- 매  1시, 4시마다 실행 --> 
+            <beans:value>0 0 1,4 * * ?</beans:value>
             <!-- 매일 오후 3시 20분마다 실행  -->
             <!-- <value>0 20 15 * * ?</value> -->
         </beans:property>

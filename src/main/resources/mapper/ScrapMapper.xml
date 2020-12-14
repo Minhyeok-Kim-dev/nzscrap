@@ -132,9 +132,6 @@
          , ItemSupAmt = VALUES(ItemSupAmt)
          , ItemTaxAmt = VALUES(ItemTaxAmt)
          , ItemBigo = VALUES(ItemBigo)
-         , ReqCd = VALUES(ReqCd)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ300XItemList" parameterType="java.util.List">
@@ -165,11 +162,7 @@
          , ItemSupAmt = VALUES(ItemSupAmt)
          , ItemTaxAmt = VALUES(ItemTaxAmt)
          , ItemBigo = VALUES(ItemBigo)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
          , IssueNoDisp = VALUES(IssueNoDisp)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4001List" parameterType="java.util.List">
@@ -195,10 +188,6 @@
          , TotAmt = VALUES(TotAmt)
          , FrPartNo = VALUES(FrPartNo)
          , TrGb = VALUES(TrGb)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4002List" parameterType="java.util.List">
@@ -234,11 +223,7 @@
          , TfbCd = VALUES(TfbCd)
          , TfbNm = VALUES(TfbNm)
          , Bigo = VALUES(Bigo)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
          , IssueGb = VALUES(IssueGb)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4010List" parameterType="java.util.List">
@@ -270,10 +255,6 @@
          , TfbNm = VALUES(TfbNm)
          , DdcYnNm = VALUES(DdcYnNm) 
          , VatDdcClNm = VALUES(VatDdcClNm)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd) 
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4020List" parameterType="java.util.List">
@@ -304,10 +285,6 @@
          , TrsClNm = VALUES(TrsClNm) 
          , DdcYnNm = VALUES(DdcYnNm)
          , VatDdcClNm = VALUES(VatDdcClNm)
-         , Rmk = VALUES(Rmk) 
-         , ReqCd = VALUES(ReqCd) 
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4050List" parameterType="java.util.List">
@@ -331,10 +308,6 @@
          , EtcSls = VALUES(EtcSls)
          , PurcEuCardSls = VALUES(PurcEuCardSls)
          , Tip = VALUES(Tip)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4060List" parameterType="java.util.List">
@@ -358,10 +331,6 @@
          , CshSlsTipAmt = VALUES(CshSlsTipAmt)
          , CshSlsAmt = VALUES(CshSlsAmt)
          , CshSlsScnt = VALUES(CshSlsScnt)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ4070List" parameterType="java.util.List">
@@ -382,10 +351,6 @@
         ON DUPLICATE KEY UPDATE 
            Exgrt = VALUES(Exgrt)
          , Wtt = VALUES(Wtt)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ5002List" parameterType="java.util.List">
@@ -453,10 +418,6 @@
          , Txtpe = VALUES(Txtpe)
          , VatActlPmtTxamt = VALUES(VatActlPmtTxamt)
          , VlntSbtrPmtTxamt = VALUES(VlntSbtrPmtTxamt)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSHometaxZ0006List" parameterType="java.util.List">
@@ -513,10 +474,6 @@
          , Et_totSellplcCnt = VALUES(Et_totSellplcCnt)
          , Et_totSplCft = VALUES(Et_totSplCft) 
          , Et_totTxamt = VALUES(Et_totTxamt)
-         , Rmk = VALUES(Rmk) 
-         , ReqCd = VALUES(ReqCd)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)  
     </insert>
     
     <insert id="insertSHometaxZ0006DtlList" parameterType="java.util.List">
@@ -558,10 +515,6 @@
          , RecApeClCd = VALUES(RecApeClCd) 
          , MchrgEmlAdrSls = VALUES(MchrgEmlAdrSls)
          , MchrgEmlAdrPrh = VALUES(MchrgEmlAdrPrh) 
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd) 
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt) 
     </insert>
     
     <insert id="insertSCardsalesB0002List" parameterType="java.util.List">
@@ -580,21 +533,13 @@
             )
         </foreach>
         ON DUPLICATE KEY UPDATE 
-           BankCd = VALUES(BankCd)
-         , InAmt = VALUES(InAmt)
-         , OutAmt = VALUES(OutAmt)
-         , TrBr = VALUES(TrBr)
-         , TrNm = VALUES(TrNm)
-         , TrTp = VALUES(TrTp)
-         , TrDetail = VALUES(TrDetail)
-         , RecvAcctNo = VALUES(RecvAcctNo)
-         , Memo = VALUES(Memo)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
-         , TrRnd = VALUES(TrRnd)
-         , WlBn = VALUES(WlBn)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
+           CardNm = VALUES(CardNm)
+         , StlBankNm = VALUES(StlBankNm)
+         , StlAcctNo = VALUES(StlAcctNo)
+         , SinYongFeeRate = VALUES(SinYongFeeRate)
+         , CheckFeeRateB = VALUES(CheckFeeRateB)
+         , CheckFeeRateC = VALUES(CheckFeeRateC)
+         , PymPeriod = VALUES(PymPeriod)
     </insert>
     
     <insert id="insertSCardsalesB0011DtlList" parameterType="java.util.List">
@@ -630,10 +575,6 @@
          , ApprAmt = VALUES(ApprAmt)
          , InstDiv = VALUES(InstDiv)
          , InsTrm = VALUES(InsTrm)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCardsalesB0011SumList" parameterType="java.util.List">
@@ -658,10 +599,6 @@
          , ApprSumCnt = VALUES(ApprSumCnt)
          , CanSumAmt = VALUES(CanSumAmt)
          , CanSumCnt = VALUES(CanSumCnt)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCardsalesB0021DtlList" parameterType="java.util.List">
@@ -699,9 +636,6 @@
          , CommVat = VALUES(CommVat)
          , PayAmt = VALUES(PayAmt) 
          , PayDt = VALUES(PayDt)
-         , Rmk = VALUES(Rmk) 
-         , ReqCd = VALUES(ReqCd)
-         , RegId = VALUES(RegId)  
     </insert>
     
     <insert id="insertSCardsalesB0021SumList" parameterType="java.util.List">
@@ -723,15 +657,11 @@
            BuySumAmt = VALUES(BuySumAmt)
          , BuySumCnt = VALUES(BuySumCnt)
          , PaySumAmt = VALUES(PaySumAmt)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
          , CommMem = VALUES(CommMem)
          , CommPoint = VALUES(CommPoint)
          , CommEtc = VALUES(CommEtc)
          , CommSum = VALUES(CommSum)
          , CommVat = VALUES(CommVat)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCardsalesB0031DtlList" parameterType="java.util.List">
@@ -764,10 +694,6 @@
          , CommVat = VALUES(CommVat)
          , EtcAmt = VALUES(EtcAmt)
          , RealPayAmt = VALUES(RealPayAmt)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCardsalesB0031SumList" parameterType="java.util.List">
@@ -787,10 +713,6 @@
            SalesSumAmt = VALUES(SalesSumAmt)
          , SalesSumCnt = VALUES(SalesSumCnt)
          , PaySumAmt = VALUES(PaySumAmt)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSBankB0002List" parameterType="java.util.List">
@@ -820,12 +742,8 @@
          , TrDetail = VALUES(TrDetail)
          , RecvAcctNo = VALUES(RecvAcctNo)
          , Memo = VALUES(Memo)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
          , TrRnd = VALUES(TrRnd)
          , WlBn = VALUES(WlBn)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCbkB0002List" parameterType="java.util.List">
@@ -857,13 +775,9 @@
          , TrTp = VALUES(TrTp)
          , TrDetail = VALUES(TrDetail)
          , RecvAcctNo = VALUES(RecvAcctNo)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
          , TrRnd = VALUES(TrRnd)
          , WlBn = VALUES(WlBn)
          , Memo = VALUES(Memo)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSSbkB0002List" parameterType="java.util.List">
@@ -893,12 +807,8 @@
          , TrDetail = VALUES(TrDetail)
          , RecvAcctNo = VALUES(RecvAcctNo)
          , Memo = VALUES(Memo)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
          , TrRnd = VALUES(TrRnd)
          , WlBn = VALUES(WlBn)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCardC0005List" parameterType="java.util.List">
@@ -945,11 +855,7 @@
          , AddTax = VALUES(AddTax)
          , Tip = VALUES(Tip)
          , StoreBizNo2 = VALUES(StoreBizNo2)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
          , GivenCardNo = VALUES(GivenCardNo)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
     </insert>
     
     <insert id="insertSCcdC0005List" parameterType="java.util.List">
@@ -996,13 +902,7 @@
          , TaxType = VALUES(TaxType)
          , StoreSt = VALUES(StoreSt)
          , StoreNo = VALUES(StoreNo)
-         , Rmk = VALUES(Rmk)
-         , ReqCd = VALUES(ReqCd)
          , GivenCardNo = VALUES(GivenCardNo)
-         , RegId = VALUES(RegId)
-         , RegDt = VALUES(RegDt)
-         , UptId = VALUES(UptId)
-         , UptDt = VALUES(UptDt)
     </insert>
     
     

@@ -17,10 +17,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -273,8 +269,12 @@ public class ScrapServiceImpl implements ScrapService {
 	/**
 	 * makeScrapCertFormList
 	 * 
-	 * 전체 스크래핑 요청내역으로 이 후 스크래핑에 사용할 인증정보 리스트를 생성합니다. - 인증정보 중복제거 - 유효성검증용 테스트 스크래핑
-	 * inJson 생성 - 테스트 스크래핑 -> 인증 결과 historyRes 적용 - 인증 오류내용 비즈북스 전송 -> 해당 항목 스크랩
+	 * 전체 스크래핑 요청내역으로 이 후 스크래핑에 사용할 인증정보 리스트를 생성합니다. 
+	 * - 인증정보 중복제거 
+	 * - 유효성검증용 테스트 스크래핑
+	 * 
+	 * inJson 생성 
+	 * - 테스트 스크래핑 -> 인증 결과 historyRes 적용 - 인증 오류내용 비즈북스 전송 -> 해당 항목 스크랩
 	 * 사용여부 비활성화 처리
 	 * 
 	 * @param jsonReqParamList

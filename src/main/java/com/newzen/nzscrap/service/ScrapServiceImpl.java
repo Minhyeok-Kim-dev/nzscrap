@@ -103,22 +103,28 @@ public class ScrapServiceImpl implements ScrapService {
 				String compCd = entry.getKey();
 				String jsonReqParam = entry.getValue();
 
-				// if (compCd.equals("D00228")) {
+				if(compCd.equals("D00228")) {
+				//if (compCd.equals("D00114")) {
+				/*
 				if(
 					// 조은 세무법인 가입업체
-					compCd.equals("D000000273") || compCd.equals("D00102") || compCd.equals("D00105") 
-					 || compCd.equals("D00113") || compCd.equals("D00114") || compCd.equals("D00117") 
-					 || compCd.equals("D00124") || compCd.equals("D00131") || compCd.equals("D00156") 
-					 || compCd.equals("D00161") || compCd.equals("D00162") || compCd.equals("D00166") 
-					 || compCd.equals("D00174") || compCd.equals("D00180") || compCd.equals("D00183") 
-					 || compCd.equals("D00185") || compCd.equals("D00195")
+					compCd.equals("D000000273") || compCd.equals("D0094") || compCd.equals("D00095")
+					 || compCd.equals("D00102") || compCd.equals("D00105") || compCd.equals("D00113") 
+					 || compCd.equals("D00114") || compCd.equals("D00117") || compCd.equals("D00124") 
+					 || compCd.equals("D00131") || compCd.equals("D00156") || compCd.equals("D00161") 
+					 || compCd.equals("D00162") || compCd.equals("D00166") || compCd.equals("D00174") 
+					 || compCd.equals("D00180") || compCd.equals("D00183") || compCd.equals("D00185") 
+					 || compCd.equals("D00195") 
 					 
 					 // 조덕희 세무사 가입업체
 					 || compCd.equals("D000000266") || compCd.equals("D000000267") || compCd.equals("D000000268") || compCd.equals("D000000269")
 					 
 					 // 뉴젠솔루션 테스트용 가입업체
-					 || compCd.equals("D000000326") || compCd.equals("D000000327")
-				) {				 
+					 || compCd.equals("D000000326") || compCd.equals("D000000327")|| compCd.equals("D000000333") 
+					 || compCd.equals("D000000334") || compCd.equals("D000000337")
+				) {	
+				*/
+				//if(compCd.equals("D000000333") || compCd.equals("D000000334")) {
 					System.out.println(compCd);
 
 					long ssTime = System.currentTimeMillis();

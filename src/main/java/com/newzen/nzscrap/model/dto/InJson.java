@@ -11,7 +11,7 @@ public class InJson {
 	private String svcCd;		// 서비스 코드
 	private String reqCd;		// 요청코드
 	private String proxy;		// proxy 주소 (ip:port)
-	private String exeTimeout;	// infotech 내부 테스트용 param (201214)  
+	//private String exeTimeout;	// infotech 내부 테스트용 param (강제로 exe 모듈 제거시 사용  ex: 300 -> 300초 뒤 제거)  
 
 	// Constructors
 	public InJson() {
@@ -24,7 +24,7 @@ public class InJson {
 		this.svcCd = svcCd;
 		this.reqCd = reqCd;
 		this.proxy = proxy;
-		this.exeTimeout = "300";	// TODO: infotech 테스트 이후 제거 (201214)
+		//this.exeTimeout = "300";	// TODO: infotech 테스트 이후 제거 (201214)
 	}
 
 	// Getters & Setters
@@ -68,17 +68,9 @@ public class InJson {
 		this.proxy = proxy;
 	}
 
-	public String getExeTimeout() {
-		return exeTimeout;
-	}
-
-	public void setExeTimeout(String exeTimeout) {
-		this.exeTimeout = exeTimeout;
-	}
-
 	@Override
 	public String toString() {
 		return "InJson [appCd=" + appCd + ", orgCd=" + orgCd + ", svcCd=" + svcCd + ", reqCd=" + reqCd + ", proxy="
-				+ proxy + ", exeTimeout=" + exeTimeout + "]";
+				+ proxy + "]";
 	}
 }
